@@ -4,6 +4,7 @@ import dashboardRouter from "./dashboard.routes";
 import transactionRouter from "./transaction.routes";
 import maintenanceRouter from "./maintenance.routes";
 import announcementRouter from "./announcement.routes";
+import vendorRouter from "./vendor.routes";
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use("/dashboard", dashboardRouter);
 router.use("/transactions", transactionRouter);
 router.use("/maintenance", maintenanceRouter);
 router.use("/announcements", announcementRouter);
+router.use("/vendors", vendorRouter);
 
 export default router;
