@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────
+
+enum Role {
+  OWNER
+  MANAGER
+  VENDOR
+  ADMIN
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum RequestStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+}
+
+enum PaymentStatus {
+  PENDING
+  UNPAID
+  PAID
+}
+
+enum TransactionStatus {
+  PAID
+  PENDING
+  UNPAID
+}
+
+// ─── Models ──────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  role         Role     @default(OWNER)
+  unitNumber   String?  @map("unit_number")
+  buildingId   String?  @map("building_id")
+  building     Building? @relation(fields: [buildingId], references: [id])
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  maintenanceRequests MaintenanceRequest[]
+  announcements       Announcement[]
+  activityLogs        ActivityLog[]
+
+  @@map("users")
+}
+
+model Building {
+  id               String   @id @default(uuid())
+  name             String
+  address          String
+  unitsCount       Int      @map("units_count")
+  subscriptionPlan String?  @map("subscription_plan")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  users               User[]
+  maintenanceRequests  MaintenanceRequest[]
+  announcements        Announcement[]
+  transactions         Transaction[]
+  documents            Document[]
+
+  @@map("buildings")
+}
+
+model MaintenanceRequest {
+  id            String        @id @default(uuid())
+  title         String
+  description   String
+  location      String
+  category      String
+  priority      Priority      @default(MEDIUM)
+  status        RequestStatus @default(PENDING)
+  paymentStatus PaymentStatus @default(PENDING) @map("payment_status")
+  amount        Decimal?      @db.Decimal(10, 2)
+
+  vendorId    String?  @map("vendor_id")
+  vendor      Vendor?  @relation(fields: [vendorId], references: [id])
+  createdById String   @map("created_by_id")
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  buildingId  String   @map("building_id")
+  building    Building @relation(fields: [buildingId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("maintenance_requests")
+}
+
+model Announcement {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  priority    Priority @default(MEDIUM)
+
+  buildingId  String   @map("building_id")
+  building    Building @relation(fields: [buildingId], references: [id])
+  createdById String   @map("created_by_id")
+  createdBy   User     @relation(fields: [createdById], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("announcements")
+}
+
+model Transaction {
+  id          String            @id @default(uuid())
+  description String
+  amount      Decimal           @db.Decimal(10, 2)
+  category    String
+  status      TransactionStatus @default(PENDING)
+
+  buildingId String   @map("building_id")
+  building   Building @relation(fields: [buildingId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("transactions")
+}
+
+model Vendor {
+  id              String    @id @default(uuid())
+  name            String
+  category        String
+  rating          Float?    @default(0)
+  email           String?
+  phone           String?
+  contractEndDate DateTime? @map("contract_end_date")
+  description     String?
+
+  maintenanceRequests MaintenanceRequest[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("vendors")
+}
+
+model Document {
+  id        String @id @default(uuid())
+  name      String
+  category  String
+  relatedTo String? @map("related_to")
+  url       String
+  size      Int
+
+  buildingId String   @map("building_id")
+  building   Building @relation(fields: [buildingId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("documents")
+}
+
+model ActivityLog {
+  id         String  @id @default(uuid())
+  action     String
+  entityType String  @map("entity_type")
+  entityId   String? @map("entity_id")
+  metadata   Json?
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("activity_logs")
+}

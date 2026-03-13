@@ -1,0 +1,42 @@
+import { create } from "zustand";
+import {
+  getToken,
+  setToken as saveToken,
+  removeToken,
+  getUserFromToken,
+  type User,
+} from "@/lib/auth";
+
+interface AuthState {
+  user: User | null;
+  token: string | null;
+  isLoading: boolean;
+  setAuth: (user: User, token: string) => void;
+  logout: () => void;
+  initFromStorage: () => void;
+}
+
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  token: null,
+  isLoading: true,
+
+  setAuth: (user, token) => {
+    saveToken(token);
+    localStorage.setItem("op_user", JSON.stringify(user));
+    set({ user, token, isLoading: false });
+  },
+
+  logout: () => {
+    removeToken();
+    localStorage.removeItem("op_user");
+    set({ user: null, token: null, isLoading: false });
+    window.location.href = "/login";
+  },
+
+  initFromStorage: () => {
+    const token = getToken();
+    const user = getUserFromToken();
+    set({ user, token, isLoading: false });
+  },
+}));

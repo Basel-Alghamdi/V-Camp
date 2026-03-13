@@ -1,0 +1,11 @@
+:root {
+  --color-primary: #1E3A5F;
+  --color-teal: #008080;
+  --color-action: #1E40AF;
+  --color-success: #16A34A;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-bg: #F3F4F6;
+  --radius-card: 8px;
+  --radius-btn: 6px;
+}
