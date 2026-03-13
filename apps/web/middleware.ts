@@ -6,6 +6,11 @@ const PUBLIC_PATHS = ["/login", "/register"];
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Allow landing page
+  if (pathname === "/") {
+    return NextResponse.next();
+  }
+
   // Allow public routes
   if (PUBLIC_PATHS.some((path) => pathname.startsWith(path))) {
     return NextResponse.next();

@@ -23,7 +23,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: "Dashboard", href: "/", icon: LayoutDashboard },
+  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Maintenens", href: "/maintenance", icon: Wrench },
   { label: "Voting", href: "/voting", icon: CheckSquare, disabled: true, badge: "Phase 2" },
   { label: "Announcement", href: "/announcements", icon: Megaphone },
@@ -41,7 +41,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const pathname = usePathname();
 
   function isActive(href: string) {
-    if (href === "/") return pathname === "/";
+    if (href === "/dashboard") return pathname === "/dashboard";
     return pathname.startsWith(href);
   }
 

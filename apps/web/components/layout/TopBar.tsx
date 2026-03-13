@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { Sun, History, Bell, PanelLeftClose, PanelLeft } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { Sun, History, Bell, PanelLeftClose, PanelLeft, LogOut, User } from "lucide-react";
 import { useAuthStore } from "@/store/auth.store";
 
 interface TopBarProps {
@@ -13,7 +13,9 @@ export default function TopBar({
   sidebarCollapsed,
   onToggleSidebar,
 }: TopBarProps) {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const initials = user?.name
     ? user.name
@@ -23,6 +25,19 @@ export default function TopBar({
         .toUpperCase()
         .slice(0, 2)
     : "U";
+
+  // Close menu on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClick);
+      return () => document.removeEventListener("mousedown", handleClick);
+    }
+  }, [menuOpen]);
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4">
@@ -77,9 +92,31 @@ export default function TopBar({
           <Bell className="h-5 w-5" />
         </button>
 
-        {/* User avatar */}
-        <div className="ml-2 flex h-9 w-9 items-center justify-center rounded-full bg-[#1E3A5F] text-sm font-semibold text-white">
-          {initials}
+        {/* User avatar + dropdown */}
+        <div className="relative ml-2" ref={menuRef}>
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1E3A5F] text-sm font-semibold text-white hover:bg-[#162d4a] transition-colors"
+          >
+            {initials}
+          </button>
+
+          {menuOpen && (
+            <div className="absolute right-0 mt-2 w-56 rounded-lg border border-gray-200 bg-white py-2 shadow-lg">
+              <div className="px-4 py-2 border-b border-gray-100">
+                <p className="text-sm font-medium text-gray-800">{user?.name || "User"}</p>
+                <p className="text-xs text-gray-400">{user?.email || ""}</p>
+                <p className="text-xs text-gray-400 mt-0.5">{user?.role || ""}</p>
+              </div>
+              <button
+                onClick={logout}
+                className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors"
+              >
+                <LogOut className="h-4 w-4" />
+                Sign Out
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>
