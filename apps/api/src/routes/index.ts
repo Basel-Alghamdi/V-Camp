@@ -5,6 +5,8 @@ import transactionRouter from "./transaction.routes";
 import maintenanceRouter from "./maintenance.routes";
 import announcementRouter from "./announcement.routes";
 import vendorRouter from "./vendor.routes";
+import documentRouter from "./document.routes";
+import activityRouter from "./activity.routes";
 
 const router = Router();
 
@@ -20,5 +22,7 @@ router.use("/transactions", transactionRouter);
 router.use("/maintenance", maintenanceRouter);
 router.use("/announcements", announcementRouter);
 router.use("/vendors", vendorRouter);
+router.use("/documents", documentRouter);
+router.use("/activities", activityRouter);
 
 export default router;

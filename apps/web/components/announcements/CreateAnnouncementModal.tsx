@@ -10,7 +10,7 @@ import type { AnnouncementPriority } from "@/hooks/use-announcements";
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  priority: z.enum(["low", "medium", "high"]),
+  priority: z.enum(["LOW", "MEDIUM", "HIGH"]),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -31,17 +31,17 @@ const priorityOptions: {
   activeClass: string;
 }[] = [
   {
-    value: "high",
+    value: "HIGH",
     label: "High",
     activeClass: "border-red-300 bg-red-50 text-red-700",
   },
   {
-    value: "medium",
+    value: "MEDIUM",
     label: "Medium",
     activeClass: "border-amber-300 bg-amber-50 text-amber-700",
   },
   {
-    value: "low",
+    value: "LOW",
     label: "Low",
     activeClass: "border-gray-300 bg-gray-100 text-gray-700",
   },
@@ -61,7 +61,7 @@ export default function CreateAnnouncementModal({
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { priority: "medium" },
+    defaultValues: { priority: "MEDIUM" },
     mode: "onChange",
   });
 

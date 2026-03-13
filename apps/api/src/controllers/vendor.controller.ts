@@ -17,7 +17,7 @@ export const getAll: RequestHandler = async (req, res, next) => {
 
 export const getById: RequestHandler = async (req, res, next) => {
   try {
-    const vendor = await vendorService.getById(req.params.id);
+    const vendor = await vendorService.getById(req.params.id as string);
     res.status(200).json({ success: true, data: vendor });
   } catch (err) {
     next(err);

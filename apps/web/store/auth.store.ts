@@ -6,6 +6,7 @@ import {
   getUserFromToken,
   type User,
 } from "@/lib/auth";
+import apiClient from "@/lib/api-client";
 
 interface AuthState {
   user: User | null;
@@ -38,5 +39,21 @@ export const useAuthStore = create<AuthState>((set) => ({
     const token = getToken();
     const user = getUserFromToken();
     set({ user, token, isLoading: false });
+
+    // Hydrate fresh user data from the API
+    if (token) {
+      apiClient
+        .get("/auth/me")
+        .then((res) => {
+          const freshUser = res.data.data;
+          localStorage.setItem("op_user", JSON.stringify(freshUser));
+          set({ user: freshUser });
+        })
+        .catch(() => {
+          removeToken();
+          localStorage.removeItem("op_user");
+          set({ user: null, token: null });
+        });
+    }
   },
 }));

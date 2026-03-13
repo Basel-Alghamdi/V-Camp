@@ -1,72 +1,64 @@
-import { useState, useCallback } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import apiClient from "@/lib/api-client";
+import { useAuthStore } from "@/store/auth.store";
+import toast from "react-hot-toast";
 
-export type AnnouncementPriority = "low" | "medium" | "high";
+export type AnnouncementPriority = "LOW" | "MEDIUM" | "HIGH";
 
 export interface Announcement {
   id: string;
   title: string;
-  priority: AnnouncementPriority;
   description: string;
-  date: string;
+  priority: AnnouncementPriority;
+  createdAt: string;
+  createdBy: { id: string; name: string };
 }
 
-const initialAnnouncements: Announcement[] = [
-  {
-    id: "1",
-    title: "Community Meeting Next Week",
-    priority: "high",
-    description:
-      "Join us for our monthly community meeting on March 15th at 7 PM. We\u2019ll discuss upcoming maintenance and budget allocations.",
-    date: "March 10, 2026",
-  },
-  {
-    id: "2",
-    title: "Pool Maintenance Schedule",
-    priority: "medium",
-    description:
-      "The pool will be closed for maintenance from March 20-22. Thank you for your patience.",
-    date: "March 9, 2026",
-  },
-  {
-    id: "3",
-    title: "New Parking Regulations",
-    priority: "low",
-    description:
-      "Please review the updated parking guidelines in your resident portal.",
-    date: "March 8, 2026",
-  },
-];
-
 export function useAnnouncements() {
-  const [announcements, setAnnouncements] =
-    useState<Announcement[]>(initialAnnouncements);
-
-  const createAnnouncement = useCallback(
-    (data: { title: string; description: string; priority: AnnouncementPriority }) => {
-      const newAnn: Announcement = {
-        id: String(Date.now()),
-        title: data.title,
-        description: data.description,
-        priority: data.priority,
-        date: new Date().toLocaleDateString("en-US", {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        }),
-      };
-      setAnnouncements((prev) => [newAnn, ...prev]);
+  const user = useAuthStore((s) => s.user);
+  return useQuery<Announcement[]>({
+    queryKey: ["announcements"],
+    queryFn: async () => {
+      const res = await apiClient.get("/announcements");
+      return res.data.data;
     },
-    []
-  );
+    enabled: !!user,
+  });
+}
 
-  const deleteAnnouncement = useCallback((id: string) => {
-    setAnnouncements((prev) => prev.filter((a) => a.id !== id));
-  }, []);
+export function useCreateAnnouncement() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: {
+      title: string;
+      description: string;
+      priority: string;
+    }) => {
+      const res = await apiClient.post("/announcements", data);
+      return res.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["announcements"] });
+      toast.success("Announcement published");
+    },
+    onError: () => {
+      toast.error("Failed to create announcement");
+    },
+  });
+}
 
-  return {
-    data: announcements,
-    isLoading: false,
-    createAnnouncement,
-    deleteAnnouncement,
-  };
+export function useDeleteAnnouncement() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await apiClient.delete(`/announcements/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["announcements"] });
+      toast.success("Announcement deleted");
+    },
+    onError: () => {
+      toast.error("Failed to delete announcement");
+    },
+  });
 }

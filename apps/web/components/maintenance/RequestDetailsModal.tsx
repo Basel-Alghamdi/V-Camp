@@ -27,7 +27,7 @@ const requestStatuses: {
   bg: string;
 }[] = [
   {
-    value: "pending",
+    value: "PENDING",
     label: "Pending",
     sublabel: "Awaiting Approval",
     icon: Clock,
@@ -36,7 +36,7 @@ const requestStatuses: {
     bg: "bg-amber-50",
   },
   {
-    value: "in_progress",
+    value: "IN_PROGRESS",
     label: "In Progress",
     sublabel: "Awaiting Assignment",
     icon: Info,
@@ -45,7 +45,7 @@ const requestStatuses: {
     bg: "bg-blue-50",
   },
   {
-    value: "completed",
+    value: "COMPLETED",
     label: "Completed",
     sublabel: "Completed",
     icon: CheckCircle,
@@ -54,7 +54,7 @@ const requestStatuses: {
     bg: "bg-green-50",
   },
   {
-    value: "rejected",
+    value: "REJECTED",
     label: "Reject",
     sublabel: "Approval Reject",
     icon: XCircle,
@@ -74,7 +74,7 @@ const paymentStatuses: {
   bg: string;
 }[] = [
   {
-    value: "pending",
+    value: "PENDING",
     label: "Pending",
     sublabel: "Awaiting Transaction",
     icon: Clock,
@@ -83,7 +83,7 @@ const paymentStatuses: {
     bg: "bg-amber-50",
   },
   {
-    value: "unpaid",
+    value: "UNPAID",
     label: "Unpaid",
     sublabel: "Awaiting Paid",
     icon: XCircle,
@@ -92,7 +92,7 @@ const paymentStatuses: {
     bg: "bg-red-50",
   },
   {
-    value: "paid",
+    value: "PAID",
     label: "Paid",
     sublabel: "Paid",
     icon: CheckCircle,

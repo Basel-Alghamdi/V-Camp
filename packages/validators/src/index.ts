@@ -4,3 +4,4 @@ export * from "./transaction.schema";
 export * from "./maintenance.schema";
 export * from "./announcement.schema";
 export * from "./vendor.schema";
+export * from "./document.schema";

@@ -23,9 +23,9 @@ interface UploadDocumentModalProps {
   onClose: () => void;
   onSubmit: (data: {
     name: string;
-    category: DocumentCategory;
-    relatedTo: string;
-    size: string;
+    category: string;
+    relatedTo?: string;
+    file: File;
   }) => void;
 }
 
@@ -41,7 +41,7 @@ export default function UploadDocumentModal({
   onSubmit,
 }: UploadDocumentModalProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] = useState<{ name: string; size: string } | null>(null);
+  const [selectedFile, setSelectedFile] = useState<{ name: string; size: string; raw: File } | null>(null);
   const [dragOver, setDragOver] = useState(false);
 
   const {
@@ -55,15 +55,16 @@ export default function UploadDocumentModal({
   });
 
   function handleFile(file: globalThis.File) {
-    setSelectedFile({ name: file.name, size: formatFileSize(file.size) });
+    setSelectedFile({ name: file.name, size: formatFileSize(file.size), raw: file });
   }
 
   function handleFormSubmit(data: FormData) {
+    if (!selectedFile) return;
     onSubmit({
       name: data.name,
       category: data.category,
-      relatedTo: data.relatedTo,
-      size: selectedFile?.size || "0 KB",
+      relatedTo: data.relatedTo || undefined,
+      file: selectedFile.raw,
     });
     reset();
     setSelectedFile(null);
@@ -203,7 +204,7 @@ export default function UploadDocumentModal({
           </button>
           <button
             type="submit"
-            disabled={!isValid}
+            disabled={!isValid || !selectedFile}
             className="flex-1 rounded-md bg-[#1E40AF] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1a3899] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Upload Document

@@ -11,7 +11,12 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import type { MonthlyDataPoint } from "@/hooks/use-dashboard";
+
+interface MonthlyDataPoint {
+  month: string;
+  budget: number;
+  expenses: number;
+}
 
 interface BudgetChartProps {
   data: MonthlyDataPoint[];

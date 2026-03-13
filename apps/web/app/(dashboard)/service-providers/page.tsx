@@ -10,7 +10,7 @@ const categories = ["All", "Cleaning", "Security", "Electrical", "Plumbing", "Ot
 export default function ServiceProvidersPage() {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
-  const { data: vendors } = useVendors(search, activeCategory);
+  const { data: vendors = [], isLoading } = useVendors(search, activeCategory);
 
   return (
     <div>
@@ -49,7 +49,13 @@ export default function ServiceProvidersPage() {
       </div>
 
       {/* Vendor Grid */}
-      {vendors.length === 0 ? (
+      {isLoading ? (
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-48 animate-pulse rounded-xl bg-gray-100" />
+          ))}
+        </div>
+      ) : vendors.length === 0 ? (
         <div className="rounded-lg bg-white p-16 text-center text-gray-400 shadow-sm">
           No vendors found matching your criteria.
         </div>
@@ -91,23 +97,36 @@ export default function ServiceProvidersPage() {
 
               {/* Description */}
               <p className="mb-4 text-sm text-gray-500 leading-relaxed">
-                {vendor.description}
+                {vendor.description || "No description"}
               </p>
 
               {/* Contact info */}
               <div className="space-y-2">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Mail className="h-4 w-4 shrink-0 text-gray-400" />
-                  <span className="truncate">{vendor.email}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Phone className="h-4 w-4 shrink-0 text-gray-400" />
-                  <span>{vendor.phone}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Calendar className="h-4 w-4 shrink-0 text-gray-400" />
-                  <span>Contract ends: {vendor.contractEnd}</span>
-                </div>
+                {vendor.email && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Mail className="h-4 w-4 shrink-0 text-gray-400" />
+                    <span className="truncate">{vendor.email}</span>
+                  </div>
+                )}
+                {vendor.phone && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Phone className="h-4 w-4 shrink-0 text-gray-400" />
+                    <span>{vendor.phone}</span>
+                  </div>
+                )}
+                {vendor.contractEndDate && (
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Calendar className="h-4 w-4 shrink-0 text-gray-400" />
+                    <span>
+                      Contract ends:{" "}
+                      {new Date(vendor.contractEndDate).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                      })}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           ))}

@@ -1,89 +1,79 @@
-import { useState, useMemo, useCallback } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import apiClient from "@/lib/api-client";
+import { useAuthStore } from "@/store/auth.store";
+import toast from "react-hot-toast";
 
 export type DocumentCategory = "Invoice" | "Contract" | "Report" | "Vendor" | "Other";
 
 export interface Document {
   id: string;
   name: string;
-  category: DocumentCategory;
-  relatedTo: string;
-  size: string;
-  date: string;
+  category: string;
+  relatedTo: string | null;
+  url: string;
+  size: number;
+  createdAt: string;
 }
 
-const initialDocuments: Document[] = [
-  {
-    id: "1",
-    name: "Plumbing Invoice - Unit 302.pdf",
-    category: "Invoice",
-    relatedTo: "Maintenance Request #1",
-    size: "245 KB",
-    date: "Oct 24, 2025",
-  },
-  {
-    id: "2",
-    name: "Elevator Maintenance Contract.pdf",
-    category: "Contract",
-    relatedTo: "LiftTech Services",
-    size: "1.2 MB",
-    date: "Oct 24, 2025",
-  },
-  {
-    id: "3",
-    name: "HVAC Inspection Report Q1.pdf",
-    category: "Report",
-    relatedTo: "Maintenance Request #3",
-    size: "890 KB",
-    date: "Oct 24, 2025",
-  },
-  {
-    id: "4",
-    name: "Vendor List 2026.xlsx",
-    category: "Vendor",
-    relatedTo: "Maintenance Request #1",
-    size: "245 KB",
-    date: "Oct 24, 2025",
-  },
-];
+export function useDocuments(search?: string, category?: string, page?: number) {
+  const user = useAuthStore((s) => s.user);
+  const params = new URLSearchParams();
+  if (search) params.set("search", search);
+  if (category && category !== "All") params.set("category", category);
+  if (page) params.set("page", String(page));
 
-export function useDocuments(search?: string, category?: string) {
-  const [documents, setDocuments] = useState<Document[]>(initialDocuments);
-
-  const filtered = useMemo(() => {
-    return documents.filter((d) => {
-      if (search) {
-        const q = search.toLowerCase();
-        if (!d.name.toLowerCase().includes(q) && !d.relatedTo.toLowerCase().includes(q)) {
-          return false;
-        }
-      }
-      if (category && category !== "All" && d.category !== category) return false;
-      return true;
-    });
-  }, [documents, search, category]);
-
-  const uploadDocument = useCallback(
-    (data: { name: string; category: DocumentCategory; relatedTo: string; size: string }) => {
-      const newDoc: Document = {
-        id: String(Date.now()),
-        name: data.name,
-        category: data.category,
-        relatedTo: data.relatedTo,
-        size: data.size,
-        date: new Date().toLocaleDateString("en-US", {
-          month: "short",
-          day: "2-digit",
-          year: "numeric",
-        }),
-      };
-      setDocuments((prev) => [newDoc, ...prev]);
+  return useQuery({
+    queryKey: ["documents", search, category, page],
+    queryFn: async () => {
+      const res = await apiClient.get(`/documents?${params.toString()}`);
+      return res.data as { data: Document[]; total: number; page: number; limit: number };
     },
-    []
-  );
+    enabled: !!user,
+  });
+}
 
-  const deleteDocument = useCallback((id: string) => {
-    setDocuments((prev) => prev.filter((d) => d.id !== id));
-  }, []);
+export function useUploadDocument() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: {
+      name: string;
+      category: string;
+      relatedTo?: string;
+      file: File;
+    }) => {
+      const formData = new FormData();
+      formData.append("file", data.file);
+      formData.append("name", data.name);
+      formData.append("category", data.category);
+      if (data.relatedTo) formData.append("relatedTo", data.relatedTo);
 
-  return { data: filtered, total: documents.length, isLoading: false, uploadDocument, deleteDocument };
+      const res = await apiClient.post("/documents", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return res.data.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["documents"] });
+      toast.success("Document uploaded");
+    },
+    onError: () => {
+      toast.error("Failed to upload document");
+    },
+  });
+}
+
+export function useDeleteDocument() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await apiClient.delete(`/documents/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["documents"] });
+      toast.success("Document deleted");
+    },
+    onError: () => {
+      toast.error("Failed to delete document");
+    },
+  });
 }

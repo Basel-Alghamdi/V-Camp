@@ -12,7 +12,7 @@ const schema = z.object({
   location: z.string().min(1, "Location is required"),
   description: z.string().optional(),
   category: z.string().min(1, "Category is required"),
-  priority: z.enum(["low", "medium", "high"]),
+  priority: z.enum(["LOW", "MEDIUM", "HIGH"]),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -30,9 +30,9 @@ interface CreateRequestModalProps {
 }
 
 const priorityOptions: { value: Priority; label: string }[] = [
-  { value: "low", label: "LOW" },
-  { value: "medium", label: "MEDIUM" },
-  { value: "high", label: "HIGH" },
+  { value: "LOW", label: "LOW" },
+  { value: "MEDIUM", label: "MEDIUM" },
+  { value: "HIGH", label: "HIGH" },
 ];
 
 export default function CreateRequestModal({
@@ -49,7 +49,7 @@ export default function CreateRequestModal({
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { priority: "medium", description: "" },
+    defaultValues: { priority: "MEDIUM", description: "" },
     mode: "onChange",
   });
 
@@ -146,9 +146,9 @@ export default function CreateRequestModal({
                   onClick={() => setValue("priority", opt.value, { shouldValidate: true })}
                   className={`flex-1 rounded-md border px-3 py-2 text-xs font-semibold transition-colors ${
                     selectedPriority === opt.value
-                      ? opt.value === "high"
+                      ? opt.value === "HIGH"
                         ? "border-red-300 bg-red-50 text-red-700"
-                        : opt.value === "medium"
+                        : opt.value === "MEDIUM"
                           ? "border-amber-300 bg-amber-50 text-amber-700"
                           : "border-gray-300 bg-gray-50 text-gray-700"
                       : "border-gray-200 bg-white text-gray-500 hover:bg-gray-50"

@@ -10,19 +10,26 @@ import {
 } from "lucide-react";
 import { PageHeader, StatCard, DataTable, StatusBadge } from "@owners-platform/ui";
 import type { DataTableColumn } from "@owners-platform/ui";
-import BudgetChart from "@/components/dashboard/BudgetChart";
 import RecentActivity from "@/components/dashboard/RecentActivity";
 import MiniCalendar from "@/components/dashboard/MiniCalendar";
 import {
   useDashboardSummary,
-  useMonthlyChartData,
   useRecentTransactions,
   useRecentActivity,
   type RecentTransaction,
 } from "@/hooks/use-dashboard";
 
 const transactionColumns: DataTableColumn<RecentTransaction>[] = [
-  { key: "date", label: "Date" },
+  {
+    key: "createdAt",
+    label: "Date",
+    render: (value) =>
+      new Date(String(value)).toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      }),
+  },
   { key: "description", label: "Description" },
   {
     key: "category",
@@ -42,16 +49,15 @@ const transactionColumns: DataTableColumn<RecentTransaction>[] = [
     key: "status",
     label: "Status",
     render: (value) => (
-      <StatusBadge status={value as "paid" | "pending"} />
+      <StatusBadge status={String(value).toLowerCase() as "paid" | "pending"} />
     ),
   },
 ];
 
 export default function DashboardPage() {
-  const { data: summary } = useDashboardSummary();
-  const { data: chartData } = useMonthlyChartData();
-  const { data: transactions } = useRecentTransactions();
-  const { data: activity } = useRecentActivity();
+  const { data: summary, isLoading: summaryLoading } = useDashboardSummary();
+  const { data: transactions, isLoading: txLoading } = useRecentTransactions();
+  const { data: activity, isLoading: actLoading } = useRecentActivity();
 
   return (
     <div>
@@ -60,47 +66,46 @@ export default function DashboardPage() {
         subtitle="Building financial and operational summary"
       />
 
-      {/* Stat Cards — 4 column grid */}
+      {/* Stat Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
-        <StatCard
-          title="Total Budget"
-          value={`$${summary.totalBudget.toLocaleString()}`}
-          icon={<DollarSign className="h-5 w-5" />}
-          change={`${summary.budgetChangePercent}`}
-          changeType="up"
-          variant="success"
-        />
-        <StatCard
-          title="Total Expenses"
-          value={`$${summary.totalExpenses.toLocaleString()}`}
-          icon={<TrendingDown className="h-5 w-5" />}
-          change={`${summary.totalTransactions} Transaction`}
-          variant="warning"
-        />
-        <StatCard
-          title="Open Request"
-          value={summary.openRequests}
-          icon={<AlertCircle className="h-5 w-5" />}
-          change={`${summary.completedRequests} completed`}
-          changeType="up"
-        />
-        <StatCard
-          title="Fee collection"
-          value={summary.feeCollection.toLocaleString()}
-          icon={<Clock className="h-5 w-5" />}
-          change={`${summary.pendingFees.toLocaleString()}$ pending`}
-          changeType="down"
-        />
+        {summaryLoading ? (
+          <>
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-28 animate-pulse rounded-lg bg-gray-100" />
+            ))}
+          </>
+        ) : (
+          <>
+            <StatCard
+              title="Total Budget"
+              value={`$${(summary?.totalBudget || 0).toLocaleString()}`}
+              icon={<DollarSign className="h-5 w-5" />}
+              variant="success"
+            />
+            <StatCard
+              title="Total Expenses"
+              value={`$${(summary?.totalExpenses || 0).toLocaleString()}`}
+              icon={<TrendingDown className="h-5 w-5" />}
+              variant="warning"
+            />
+            <StatCard
+              title="Open Requests"
+              value={summary?.openRequests || 0}
+              icon={<AlertCircle className="h-5 w-5" />}
+            />
+            <StatCard
+              title="Fee Collection"
+              value={`$${(summary?.feeCollection || 0).toLocaleString()}`}
+              icon={<Clock className="h-5 w-5" />}
+              change={`$${(summary?.pendingFees || 0).toLocaleString()} pending`}
+              changeType="down"
+            />
+          </>
+        )}
       </div>
 
-      {/* Chart + Activity — two column */}
+      {/* Activity */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px] mb-6">
-        <BudgetChart data={chartData} />
-        <RecentActivity items={activity} />
-      </div>
-
-      {/* Transactions + Calendar — two column */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
         <div className="rounded-lg bg-white p-5 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-[#1E3A5F]">
@@ -113,12 +118,45 @@ export default function DashboardPage() {
               More
             </Link>
           </div>
-          <DataTable<RecentTransaction>
-            columns={transactionColumns}
-            data={transactions}
-          />
+          {txLoading ? (
+            <div className="space-y-3">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="h-10 animate-pulse rounded bg-gray-100" />
+              ))}
+            </div>
+          ) : (
+            <DataTable<RecentTransaction>
+              columns={transactionColumns}
+              data={transactions || []}
+            />
+          )}
         </div>
-        <MiniCalendar />
+        <div className="space-y-6">
+          {actLoading ? (
+            <div className="rounded-lg bg-white p-5 shadow-sm border border-gray-100">
+              <div className="space-y-3">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="h-10 animate-pulse rounded bg-gray-100" />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <RecentActivity
+              items={(activity || []).map((a) => ({
+                id: a.id,
+                label: a.action,
+                date: new Date(a.createdAt).toLocaleDateString("en-US", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                }),
+                amount: 0,
+                type: "income" as const,
+              }))}
+            />
+          )}
+          <MiniCalendar />
+        </div>
       </div>
     </div>
   );

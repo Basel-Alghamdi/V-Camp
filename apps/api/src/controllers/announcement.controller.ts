@@ -45,7 +45,7 @@ export const create: RequestHandler = async (req, res, next) => {
 
 export const remove: RequestHandler = async (req, res, next) => {
   try {
-    await announcementService.remove(req.params.id, req.user!.userId);
+    await announcementService.remove(req.params.id as string, req.user!.userId);
     res.status(200).json({ success: true, message: "Announcement deleted" });
   } catch (err) {
     next(err);

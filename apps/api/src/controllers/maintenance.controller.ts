@@ -27,7 +27,7 @@ export const getAll: RequestHandler = async (req, res, next) => {
 
 export const getById: RequestHandler = async (req, res, next) => {
   try {
-    const request = await maintenanceService.getById(req.params.id);
+    const request = await maintenanceService.getById(req.params.id as string);
     res.status(200).json({ success: true, data: request });
   } catch (err) {
     next(err);
@@ -58,7 +58,7 @@ export const create: RequestHandler = async (req, res, next) => {
 export const update: RequestHandler = async (req, res, next) => {
   try {
     const request = await maintenanceService.update(
-      req.params.id,
+      req.params.id as string,
       req.user!.userId,
       req.body
     );
@@ -70,7 +70,7 @@ export const update: RequestHandler = async (req, res, next) => {
 
 export const remove: RequestHandler = async (req, res, next) => {
   try {
-    await maintenanceService.remove(req.params.id, req.user!.userId);
+    await maintenanceService.remove(req.params.id as string, req.user!.userId);
     res.status(200).json({ success: true, message: "Request deleted" });
   } catch (err) {
     next(err);

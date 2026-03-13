@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Role } from "@owners-platform/database";
 
 export type { Role };
 

@@ -58,7 +58,7 @@ export default function ActivityLogPage() {
   const [page, setPage] = useState(1);
   const perPage = 8;
 
-  const { data: entries, total } = useActivityLog(filters);
+  const { data: entries, total, isLoading } = useActivityLog(filters);
 
   const paginatedEntries = entries.slice((page - 1) * perPage, page * perPage);
   const totalPages = Math.ceil(entries.length / perPage);
@@ -142,7 +142,13 @@ export default function ActivityLogPage() {
 
       {/* Activity Timeline */}
       <div className="rounded-lg bg-white shadow-sm border border-gray-100">
-        {paginatedEntries.length === 0 ? (
+        {isLoading ? (
+          <div className="space-y-1 p-4">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-14 animate-pulse rounded bg-gray-100" />
+            ))}
+          </div>
+        ) : paginatedEntries.length === 0 ? (
           <div className="px-6 py-16 text-center text-gray-400">
             No activity entries found.
           </div>
@@ -171,33 +177,30 @@ export default function ActivityLogPage() {
                     </p>
                     <div className="flex items-center gap-2 mt-0.5">
                       <span className="text-xs text-gray-400">
-                        {entry.user}
+                        {entry.user.name}
                       </span>
-                      {entry.detail && (
-                        <>
-                          <span className="text-xs text-gray-300">&middot;</span>
-                          <span className="text-xs text-gray-400 italic truncate">
-                            {entry.detail}
-                          </span>
-                        </>
-                      )}
+                      <span className="text-xs text-gray-300">&middot;</span>
+                      <span className="text-xs text-gray-400">
+                        {entry.user.role}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Amount / Date */}
+                  {/* Date */}
                   <div className="shrink-0 text-right">
-                    {entry.amount && (
-                      <p
-                        className={`text-sm font-semibold ${
-                          entry.amount.startsWith("+")
-                            ? "text-green-600"
-                            : "text-red-500"
-                        }`}
-                      >
-                        {entry.amount}
-                      </p>
-                    )}
-                    <p className="text-xs text-gray-400">{entry.date}</p>
+                    <p className="text-xs text-gray-400">
+                      {new Date(entry.createdAt).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                      })}
+                    </p>
+                    <p className="text-xs text-gray-300">
+                      {new Date(entry.createdAt).toLocaleTimeString("en-US", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
                   </div>
                 </div>
               );

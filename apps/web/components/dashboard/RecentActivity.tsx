@@ -2,10 +2,17 @@
 
 import React from "react";
 import { DollarSign, TrendingDown, CheckSquare } from "lucide-react";
-import type { RecentActivityItem } from "@/hooks/use-dashboard";
+
+interface ActivityDisplayItem {
+  id: string;
+  label: string;
+  date: string;
+  amount: number;
+  type: string;
+}
 
 interface RecentActivityProps {
-  items: RecentActivityItem[];
+  items: ActivityDisplayItem[];
 }
 
 const iconConfig: Record<
@@ -26,7 +33,7 @@ export default function RecentActivity({ items }: RecentActivityProps) {
 
       <div className="space-y-4">
         {items.map((item) => {
-          const config = iconConfig[item.type];
+          const config = iconConfig[item.type] || iconConfig.income;
           const Icon = config.icon;
 
           return (

@@ -1,4 +1,6 @@
-import { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import apiClient from "@/lib/api-client";
+import { useAuthStore } from "@/store/auth.store";
 
 export type EntityType =
   | "transaction"
@@ -8,26 +10,17 @@ export type EntityType =
   | "document"
   | "user";
 
-export type IconType =
-  | "dollar"
-  | "wrench"
-  | "megaphone"
-  | "users"
-  | "file"
-  | "user";
-
+export type IconType = "dollar" | "wrench" | "megaphone" | "users" | "file" | "user";
 export type IconColor = "green" | "blue" | "purple" | "amber" | "gray" | "teal";
 
 export interface ActivityEntry {
   id: string;
   action: string;
   entityType: EntityType;
-  user: string;
-  detail?: string;
-  amount?: string;
-  date: string;
-  icon: IconType;
-  color: IconColor;
+  entityId: string | null;
+  metadata: Record<string, unknown> | null;
+  createdAt: string;
+  user: { id: string; name: string; role: string };
 }
 
 export interface ActivityFilters {
@@ -37,107 +30,57 @@ export interface ActivityFilters {
   dateTo: string;
 }
 
-const mockEntries: ActivityEntry[] = [
-  {
-    id: "1",
-    action: "Fee collected",
-    entityType: "transaction",
-    user: "Ahmad Abdullah",
-    amount: "+$2,500",
-    date: "28 Jan 2026",
-    icon: "dollar",
-    color: "green",
-  },
-  {
-    id: "2",
-    action: "Maintenance request created",
-    entityType: "maintenance",
-    user: "Bader Al-Rashid",
-    detail: "Pool Maintenance",
-    date: "27 Jan 2026",
-    icon: "wrench",
-    color: "blue",
-  },
-  {
-    id: "3",
-    action: "Announcement published",
-    entityType: "announcement",
-    user: "Basel Manager",
-    detail: "Community Meeting",
-    date: "26 Jan 2026",
-    icon: "megaphone",
-    color: "purple",
-  },
-  {
-    id: "4",
-    action: "Vendor contract updated",
-    entityType: "vendor",
-    user: "Admin",
-    detail: "SecureWatch Ltd.",
-    date: "25 Jan 2026",
-    icon: "users",
-    color: "amber",
-  },
-  {
-    id: "5",
-    action: "Document uploaded",
-    entityType: "document",
-    user: "Basel Manager",
-    detail: "HVAC Inspection Report",
-    date: "24 Jan 2026",
-    icon: "file",
-    color: "gray",
-  },
-  {
-    id: "6",
-    action: "Maintenance status updated",
-    entityType: "maintenance",
-    user: "Basel Manager",
-    detail: "Elevator Maintenance → Completed",
-    date: "23 Jan 2026",
-    icon: "wrench",
-    color: "green",
-  },
-  {
-    id: "7",
-    action: "New owner registered",
-    entityType: "user",
-    user: "System",
-    detail: "Unit 504",
-    date: "22 Jan 2026",
-    icon: "user",
-    color: "blue",
-  },
-  {
-    id: "8",
-    action: "Budget updated",
-    entityType: "transaction",
-    user: "Basel Manager",
-    detail: "Q1 2026 Budget Set",
-    date: "21 Jan 2026",
-    icon: "dollar",
-    color: "teal",
-  },
-];
+function getIconForType(type: string): IconType {
+  switch (type) {
+    case "transaction": return "dollar";
+    case "maintenance": return "wrench";
+    case "announcement": return "megaphone";
+    case "vendor": return "users";
+    case "document": return "file";
+    default: return "user";
+  }
+}
+
+function getColorForType(type: string): IconColor {
+  switch (type) {
+    case "transaction": return "green";
+    case "maintenance": return "blue";
+    case "announcement": return "purple";
+    case "vendor": return "amber";
+    case "document": return "gray";
+    default: return "teal";
+  }
+}
 
 export function useActivityLog(filters: ActivityFilters) {
-  const filtered = useMemo(() => {
-    return mockEntries.filter((e) => {
-      if (filters.search) {
-        const q = filters.search.toLowerCase();
-        if (
-          !e.action.toLowerCase().includes(q) &&
-          !e.user.toLowerCase().includes(q)
-        ) {
-          return false;
-        }
-      }
-      if (filters.type && filters.type !== "All" && e.entityType !== filters.type) {
-        return false;
-      }
-      return true;
-    });
-  }, [filters]);
+  const user = useAuthStore((s) => s.user);
+  const params = new URLSearchParams();
+  if (filters.type && filters.type !== "All") params.set("entityType", filters.type);
+  if (filters.search) params.set("search", filters.search);
+  if (filters.dateFrom) params.set("from", filters.dateFrom);
+  if (filters.dateTo) params.set("to", filters.dateTo);
 
-  return { data: filtered, total: mockEntries.length, isLoading: false };
+  const query = useQuery({
+    queryKey: ["activities", filters.type, filters.search, filters.dateFrom, filters.dateTo],
+    queryFn: async () => {
+      const res = await apiClient.get(`/activities?${params.toString()}`);
+      return res.data;
+    },
+    enabled: !!user,
+  });
+
+  const entries: (ActivityEntry & { icon: IconType; color: IconColor })[] = (
+    query.data?.data || []
+  ).map((e: ActivityEntry) => ({
+    ...e,
+    icon: getIconForType(e.entityType),
+    color: getColorForType(e.entityType),
+  }));
+
+  return {
+    data: entries,
+    total: query.data?.total || 0,
+    isLoading: query.isLoading,
+    isError: query.isError,
+  };
 }
