@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Wrench,
   Megaphone,
@@ -6,82 +8,84 @@ import {
   CheckSquare,
   DollarSign,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
-const features = [
+const featureKeys = [
   {
     icon: Wrench,
     iconBg: "bg-blue-50",
     iconColor: "text-blue-600",
-    title: "Maintenance Management",
-    desc: "Track every request from submission to resolution. Assign vendors, set priorities, and keep residents informed at every step.",
-    link: "Explore maintenance",
+    titleKey: "featureMaintenance",
+    descKey: "featureMaintenanceDesc",
+    linkKey: "featureMaintenanceLink",
   },
   {
     icon: Megaphone,
     iconBg: "bg-purple-50",
     iconColor: "text-purple-600",
-    title: "Community Communication",
-    desc: "From urgent notices, meeting agendas, and community updates efficiently with priority-tagged broadcasting.",
-    link: "Transparent updates",
+    titleKey: "featureCommunication",
+    descKey: "featureCommunicationDesc",
+    linkKey: "featureCommunicationLink",
   },
   {
     icon: Users,
     iconBg: "bg-green-50",
     iconColor: "text-green-600",
-    title: "Service Providers",
-    desc: "Manage your trusted vendor network — electricians, plumbers, security and cleaning — with ratings, contracts, and scheduling.",
-    link: "Verified Contractors",
+    titleKey: "featureServiceProviders",
+    descKey: "featureServiceProvidersDesc",
+    linkKey: "featureServiceProvidersLink",
   },
   {
     icon: FileText,
     iconBg: "bg-amber-50",
     iconColor: "text-amber-600",
-    title: "Document Center",
-    desc: "Organize invoices, contracts, inspection reports, and vendor files that are always accessible and in compliance.",
-    link: "Find files instantly",
+    titleKey: "featureDocuments",
+    descKey: "featureDocumentsDesc",
+    linkKey: "featureDocumentsLink",
   },
   {
     icon: CheckSquare,
     iconBg: "bg-red-50",
     iconColor: "text-red-600",
-    title: "Community Voting",
-    desc: "Create polls and vote on important decisions digitally — fully documented, transparent, and accessible to all owners.",
-    link: "Transparent & accessible",
+    titleKey: "featureVoting",
+    descKey: "featureVotingDesc",
+    linkKey: "featureVotingLink",
   },
   {
     icon: DollarSign,
     iconBg: "bg-teal-50",
     iconColor: "text-teal-600",
-    title: "Budget & Finance Overview",
-    desc: "Get a clear view of your association finances — collected fees, monthly expenses, and full transaction history.",
-    link: "Always in control",
+    titleKey: "featureBudget",
+    descKey: "featureBudgetDesc",
+    linkKey: "featureBudgetLink",
   },
 ];
 
 export default function FeaturesSection() {
+  const t = useTranslations("landing");
+
   return (
     <section className="bg-white py-20 px-6" id="features">
       <div className="max-w-3xl mx-auto text-center mb-16">
         <p className="text-sm font-semibold text-[#1E40AF] uppercase tracking-wider">
-          Platform Features
+          {t("featuresEyebrow")}
         </p>
         <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-[#1E3A5F]">
-          Everything your association
+          {t("featuresTitle1")}
           <br />
-          needs to <span className="text-[#1E40AF]">run smoothly</span>
+          <span className="text-[#1E40AF]">{t("featuresTitle2")}</span>
         </h2>
         <p className="mt-4 text-lg text-gray-500 max-w-2xl mx-auto">
-          Purpose-built tools to automate maintenance, engage board members, and
-          residents — all on one unified platform.
+          {t("featuresSubtitle")}
         </p>
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {features.map((feature) => {
+        {featureKeys.map((feature) => {
           const Icon = feature.icon;
           return (
             <div
-              key={feature.title}
+              key={feature.titleKey}
               className="bg-white border border-gray-100 rounded-xl p-6 hover:shadow-md transition-shadow group"
             >
               <div
@@ -90,13 +94,13 @@ export default function FeaturesSection() {
                 <Icon className={`w-6 h-6 ${feature.iconColor}`} />
               </div>
               <h3 className="text-lg font-semibold text-[#1E3A5F] mb-2">
-                {feature.title}
+                {t(feature.titleKey)}
               </h3>
               <p className="text-sm text-gray-500 leading-relaxed mb-4">
-                {feature.desc}
+                {t(feature.descKey)}
               </p>
               <span className="text-sm font-medium text-[#1E40AF] group-hover:underline cursor-pointer">
-                {feature.link} &rarr;
+                {t(feature.linkKey)} &rarr;
               </span>
             </div>
           );

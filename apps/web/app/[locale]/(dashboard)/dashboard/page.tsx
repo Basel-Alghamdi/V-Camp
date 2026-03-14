@@ -18,52 +18,55 @@ import {
   useRecentActivity,
   type RecentTransaction,
 } from "@/hooks/use-dashboard";
-
-const transactionColumns: DataTableColumn<RecentTransaction>[] = [
-  {
-    key: "createdAt",
-    label: "Date",
-    render: (value) =>
-      new Date(String(value)).toLocaleDateString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
-      }),
-  },
-  { key: "description", label: "Description" },
-  {
-    key: "category",
-    label: "Category",
-    render: (value) => (
-      <span className="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
-        {String(value)}
-      </span>
-    ),
-  },
-  {
-    key: "amount",
-    label: "Amount",
-    render: (value) => `$${Number(value).toLocaleString()}`,
-  },
-  {
-    key: "status",
-    label: "Status",
-    render: (value) => (
-      <StatusBadge status={String(value).toLowerCase() as "paid" | "pending"} />
-    ),
-  },
-];
+import { useTranslations, useLocale } from "next-intl";
 
 export default function DashboardPage() {
+  const t = useTranslations("dashboard");
+  const locale = useLocale();
   const { data: summary, isLoading: summaryLoading } = useDashboardSummary();
   const { data: transactions, isLoading: txLoading } = useRecentTransactions();
   const { data: activity, isLoading: actLoading } = useRecentActivity();
 
+  const transactionColumns: DataTableColumn<RecentTransaction>[] = [
+    {
+      key: "createdAt",
+      label: t("date"),
+      render: (value) =>
+        new Date(String(value)).toLocaleDateString(locale === "ar" ? "ar-SA" : "en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        }),
+    },
+    { key: "description", label: t("description") },
+    {
+      key: "category",
+      label: t("category"),
+      render: (value) => (
+        <span className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-900/30 px-2.5 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-400">
+          {String(value)}
+        </span>
+      ),
+    },
+    {
+      key: "amount",
+      label: t("amount"),
+      render: (value) => `$${Number(value).toLocaleString()}`,
+    },
+    {
+      key: "status",
+      label: t("status"),
+      render: (value) => (
+        <StatusBadge status={String(value).toLowerCase() as "paid" | "pending"} />
+      ),
+    },
+  ];
+
   return (
     <div>
       <PageHeader
-        title="Overview"
-        subtitle="Building financial and operational summary"
+        title={t("title")}
+        subtitle={t("subtitle")}
       />
 
       {/* Stat Cards */}
@@ -71,33 +74,33 @@ export default function DashboardPage() {
         {summaryLoading ? (
           <>
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-28 animate-pulse rounded-lg bg-gray-100" />
+              <div key={i} className="h-28 animate-pulse rounded-lg bg-gray-100 dark:bg-gray-700" />
             ))}
           </>
         ) : (
           <>
             <StatCard
-              title="Total Budget"
+              title={t("totalBudget")}
               value={`$${(summary?.totalBudget || 0).toLocaleString()}`}
               icon={<DollarSign className="h-5 w-5" />}
               variant="success"
             />
             <StatCard
-              title="Total Expenses"
+              title={t("totalExpenses")}
               value={`$${(summary?.totalExpenses || 0).toLocaleString()}`}
               icon={<TrendingDown className="h-5 w-5" />}
               variant="warning"
             />
             <StatCard
-              title="Open Requests"
+              title={t("openRequests")}
               value={summary?.openRequests || 0}
               icon={<AlertCircle className="h-5 w-5" />}
             />
             <StatCard
-              title="Fee Collection"
+              title={t("feeCollection")}
               value={`$${(summary?.feeCollection || 0).toLocaleString()}`}
               icon={<Clock className="h-5 w-5" />}
-              change={`$${(summary?.pendingFees || 0).toLocaleString()} pending`}
+              change={`$${(summary?.pendingFees || 0).toLocaleString()} ${t("pending")}`}
               changeType="down"
             />
           </>
@@ -106,22 +109,22 @@ export default function DashboardPage() {
 
       {/* Activity */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px] mb-6">
-        <div className="rounded-lg bg-white p-5 shadow-sm border border-gray-100">
+        <div className="rounded-lg bg-white dark:bg-gray-900 p-5 shadow-sm dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-[#1E3A5F]">
-              Recent transaction
+            <h3 className="text-lg font-semibold text-[#1E3A5F] dark:text-white">
+              {t("recentTransactions")}
             </h3>
             <Link
-              href="/maintenance"
+              href={`/${locale}/maintenance`}
               className="text-sm font-medium text-[#1E40AF] hover:underline"
             >
-              More
+              {t("more")}
             </Link>
           </div>
           {txLoading ? (
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-10 animate-pulse rounded bg-gray-100" />
+                <div key={i} className="h-10 animate-pulse rounded bg-gray-100 dark:bg-gray-700" />
               ))}
             </div>
           ) : (
@@ -133,10 +136,10 @@ export default function DashboardPage() {
         </div>
         <div className="space-y-6">
           {actLoading ? (
-            <div className="rounded-lg bg-white p-5 shadow-sm border border-gray-100">
+            <div className="rounded-lg bg-white dark:bg-gray-900 p-5 shadow-sm dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800">
               <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="h-10 animate-pulse rounded bg-gray-100" />
+                  <div key={i} className="h-10 animate-pulse rounded bg-gray-100 dark:bg-gray-700" />
                 ))}
               </div>
             </div>
@@ -145,7 +148,7 @@ export default function DashboardPage() {
               items={(activity || []).map((a) => ({
                 id: a.id,
                 label: a.action,
-                date: new Date(a.createdAt).toLocaleDateString("en-US", {
+                date: new Date(a.createdAt).toLocaleDateString(locale === "ar" ? "ar-SA" : "en-US", {
                   day: "numeric",
                   month: "long",
                   year: "numeric",

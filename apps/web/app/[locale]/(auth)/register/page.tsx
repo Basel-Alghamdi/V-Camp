@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslations, useLocale } from "next-intl";
 import apiClient from "@/lib/api-client";
 import { setToken } from "@/lib/auth";
 import { useAuthStore } from "@/store/auth.store";
@@ -24,6 +25,8 @@ type RegisterForm = z.infer<typeof registerSchema>;
 
 export default function RegisterPage() {
   const router = useRouter();
+  const t = useTranslations("auth");
+  const locale = useLocale();
   const { setAuth } = useAuthStore();
   const [error, setError] = useState("");
 
@@ -56,7 +59,7 @@ export default function RegisterPage() {
         },
         token
       );
-      router.push("/dashboard");
+      router.push(`/${locale}/dashboard`);
     } catch (err: unknown) {
       if (
         err &&
@@ -71,16 +74,16 @@ export default function RegisterPage() {
       ) {
         setError(String((err.response as { data: { error: string } }).data.error));
       } else {
-        setError("Registration failed. Please try again.");
+        setError(t("registrationFailed"));
       }
     }
   }
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1E3A5F]">Create Account</h1>
+      <h1 className="text-2xl font-bold text-[#1E3A5F]">{t("createAccount")}</h1>
       <p className="mt-1 text-sm text-gray-500">
-        Register to get started
+        {t("registerSubtitle")}
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
@@ -90,12 +93,12 @@ export default function RegisterPage() {
             htmlFor="name"
             className="block text-sm font-medium text-gray-700"
           >
-            Full Name
+            {t("fullName")}
           </label>
           <input
             id="name"
             type="text"
-            placeholder="Enter your full name"
+            placeholder={t("fullNamePlaceholder")}
             {...register("name")}
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm placeholder-gray-400 shadow-sm focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
           />
@@ -110,12 +113,12 @@ export default function RegisterPage() {
             htmlFor="email"
             className="block text-sm font-medium text-gray-700"
           >
-            Email
+            {t("email")}
           </label>
           <input
             id="email"
             type="email"
-            placeholder="Enter your email"
+            placeholder={t("emailPlaceholder")}
             {...register("email")}
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm placeholder-gray-400 shadow-sm focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
           />
@@ -130,12 +133,12 @@ export default function RegisterPage() {
             htmlFor="password"
             className="block text-sm font-medium text-gray-700"
           >
-            Password
+            {t("password")}
           </label>
           <input
             id="password"
             type="password"
-            placeholder="Create a password"
+            placeholder={t("createPasswordPlaceholder")}
             {...register("password")}
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm placeholder-gray-400 shadow-sm focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
           />
@@ -152,16 +155,16 @@ export default function RegisterPage() {
             htmlFor="role"
             className="block text-sm font-medium text-gray-700"
           >
-            Role
+            {t("role")}
           </label>
           <select
             id="role"
             {...register("role")}
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm text-gray-700 shadow-sm focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
           >
-            <option value="">Select a role</option>
-            <option value="OWNER">Owner</option>
-            <option value="MANAGER">Manager</option>
+            <option value="">{t("selectRole")}</option>
+            <option value="OWNER">{t("roleOwner")}</option>
+            <option value="MANAGER">{t("roleManager")}</option>
           </select>
           {errors.role && (
             <p className="mt-1 text-xs text-red-500">{errors.role.message}</p>
@@ -175,12 +178,12 @@ export default function RegisterPage() {
               htmlFor="unitNumber"
               className="block text-sm font-medium text-gray-700"
             >
-              Unit Number
+              {t("unitNumber")}
             </label>
             <input
               id="unitNumber"
               type="text"
-              placeholder="e.g., Unit 302"
+              placeholder={t("unitNumberPlaceholder")}
               {...register("unitNumber")}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm placeholder-gray-400 shadow-sm focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
             />
@@ -200,17 +203,17 @@ export default function RegisterPage() {
           disabled={isSubmitting}
           className="w-full rounded-md bg-[#1E40AF] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#1E3A9F] focus:outline-none focus:ring-2 focus:ring-[#1E40AF] focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
         >
-          {isSubmitting ? "Creating account..." : "Create Account"}
+          {isSubmitting ? t("creatingAccount") : t("createAccount")}
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm text-gray-500">
-        Already have an account?{" "}
+        {t("haveAccount")}{" "}
         <Link
-          href="/login"
+          href={`/${locale}/login`}
           className="font-medium text-[#1E40AF] hover:underline"
         >
-          Sign in
+          {t("loginLink")}
         </Link>
       </p>
     </div>

@@ -29,19 +29,19 @@ function formatYAxis(value: number) {
 
 export default function BudgetChart({ data }: BudgetChartProps) {
   return (
-    <div className="rounded-lg bg-white p-5 shadow-sm border border-gray-100">
+    <div className="rounded-lg bg-white dark:bg-gray-900 p-5 shadow-sm dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800">
       <div className="mb-4 flex items-center gap-6">
-        <h3 className="text-sm font-semibold text-[#1E3A5F]">
+        <h3 className="text-sm font-semibold text-[#1E3A5F] dark:text-white">
           Monthly Budget vs. Actual expenses
         </h3>
         <div className="flex items-center gap-4 ml-auto">
           <div className="flex items-center gap-1.5">
             <span className="h-2.5 w-2.5 rounded-full bg-[#1E3A5F]" />
-            <span className="text-xs text-gray-500">Budget</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">Budget</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="h-2.5 w-2.5 rounded-full bg-[#93C5FD]" />
-            <span className="text-xs text-gray-500">expenses</span>
+            <span className="text-xs text-gray-500 dark:text-gray-400">expenses</span>
           </div>
         </div>
       </div>

@@ -1,6 +1,11 @@
+"use client";
+
 import { Building2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+  const t = useTranslations("landing");
+
   return (
     <footer className="bg-[#0F172A] text-white py-12 px-6">
       <div className="max-w-7xl mx-auto">
@@ -14,21 +19,20 @@ export default function Footer() {
               <span className="font-bold text-lg">AssociO</span>
             </div>
             <p className="text-sm text-gray-400 mb-6 max-w-xs leading-relaxed">
-              The smart platform for Owners Associations to manage their
-              communities with clarity, efficiency, and transparency.
+              {t("footerDesc")}
             </p>
           </div>
 
           {/* Col 2 — Product */}
           <div>
             <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-              Product
+              {t("footerProduct")}
             </h4>
             <div className="space-y-3">
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Features</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Pricing</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Dashboard</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">API</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">{t("footerFeatures")}</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">{t("footerPricing")}</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">{t("footerDashboard")}</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">{t("footerAPI")}</p>
             </div>
           </div>
 
@@ -38,13 +42,13 @@ export default function Footer() {
               id="resources"
               className="text-sm font-semibold text-white uppercase tracking-wider mb-4"
             >
-              Company
+              {t("footerCompany")}
             </h4>
             <div className="space-y-3">
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Blog</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Help Center</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">About</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Careers</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">{t("footerBlog")}</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">{t("footerHelp")}</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">{t("footerAbout")}</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">{t("footerCareers")}</p>
             </div>
           </div>
         </div>
@@ -52,11 +56,11 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-gray-700 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-400">
-            &copy; 2026 AssociO. All rights reserved.
+            &copy; 2026 AssociO. {t("footerRights")}
           </p>
           <div className="flex gap-6">
-            <span className="text-sm text-gray-400 hover:text-white cursor-pointer">Privacy Policy</span>
-            <span className="text-sm text-gray-400 hover:text-white cursor-pointer">Terms of Service</span>
+            <span className="text-sm text-gray-400 hover:text-white cursor-pointer">{t("footerPrivacy")}</span>
+            <span className="text-sm text-gray-400 hover:text-white cursor-pointer">{t("footerTerms")}</span>
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslations } from "next-intl";
 import { Modal } from "@owners-platform/ui";
 import type { AnnouncementPriority } from "@/hooks/use-announcements";
 
@@ -25,33 +26,35 @@ interface CreateAnnouncementModalProps {
   }) => void;
 }
 
-const priorityOptions: {
-  value: AnnouncementPriority;
-  label: string;
-  activeClass: string;
-}[] = [
-  {
-    value: "HIGH",
-    label: "High",
-    activeClass: "border-red-300 bg-red-50 text-red-700",
-  },
-  {
-    value: "MEDIUM",
-    label: "Medium",
-    activeClass: "border-amber-300 bg-amber-50 text-amber-700",
-  },
-  {
-    value: "LOW",
-    label: "Low",
-    activeClass: "border-gray-300 bg-gray-100 text-gray-700",
-  },
-];
-
 export default function CreateAnnouncementModal({
   isOpen,
   onClose,
   onSubmit,
 }: CreateAnnouncementModalProps) {
+  const t = useTranslations("announcements");
+
+  const priorityOptions: {
+    value: AnnouncementPriority;
+    label: string;
+    activeClass: string;
+  }[] = [
+    {
+      value: "HIGH",
+      label: t("high"),
+      activeClass: "border-red-300 bg-red-50 dark:bg-red-900/30 text-red-700",
+    },
+    {
+      value: "MEDIUM",
+      label: t("medium"),
+      activeClass: "border-amber-300 bg-amber-50 dark:bg-amber-900/30 text-amber-700",
+    },
+    {
+      value: "LOW",
+      label: t("low"),
+      activeClass: "border-gray-300 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200",
+    },
+  ];
+
   const {
     register,
     handleSubmit,
@@ -82,19 +85,19 @@ export default function CreateAnnouncementModal({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      title="Create New Announcement"
+      title={t("createTitle")}
       size="md"
     >
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
         {/* Title */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Title
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            {t("titleField")}
           </label>
           <input
             {...register("title")}
-            placeholder="Enter announcement title"
-            className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm placeholder-gray-400 focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
+            placeholder={t("titlePlaceholder")}
+            className="w-full rounded-md border border-gray-300 dark:border-gray-700 px-3 py-2.5 text-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
           />
           {errors.title && (
             <p className="mt-1 text-xs text-red-500">{errors.title.message}</p>
@@ -103,14 +106,14 @@ export default function CreateAnnouncementModal({
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Description
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            {t("description")}
           </label>
           <textarea
             {...register("description")}
             rows={4}
-            placeholder="Enter announcement description"
-            className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm placeholder-gray-400 focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF] resize-none"
+            placeholder={t("descriptionPlaceholder")}
+            className="w-full rounded-md border border-gray-300 dark:border-gray-700 px-3 py-2.5 text-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF] resize-none"
           />
           {errors.description && (
             <p className="mt-1 text-xs text-red-500">
@@ -121,8 +124,8 @@ export default function CreateAnnouncementModal({
 
         {/* Priority */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Priority
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            {t("priority")}
           </label>
           <div className="grid grid-cols-3 gap-3">
             {priorityOptions.map((opt) => (
@@ -135,7 +138,7 @@ export default function CreateAnnouncementModal({
                 className={`rounded-md border px-4 py-2.5 text-sm font-medium transition-colors ${
                   selectedPriority === opt.value
                     ? opt.activeClass
-                    : "border-gray-200 bg-gray-50 text-gray-500 hover:bg-gray-100"
+                    : "border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
                 }`}
               >
                 {opt.label}
@@ -149,16 +152,16 @@ export default function CreateAnnouncementModal({
           <button
             type="button"
             onClick={handleClose}
-            className="flex-1 rounded-md border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="flex-1 rounded-md border border-gray-300 dark:border-gray-700 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
           >
-            Cancel
+            {t("cancel")}
           </button>
           <button
             type="submit"
             disabled={!isValid}
             className="flex-1 rounded-md bg-[#1E40AF] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1a3899] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            Create Announcement
+            {t("create")}
           </button>
         </div>
       </form>

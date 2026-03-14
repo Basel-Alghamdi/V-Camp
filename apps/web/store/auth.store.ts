@@ -32,7 +32,9 @@ export const useAuthStore = create<AuthState>((set) => ({
     removeToken();
     localStorage.removeItem("op_user");
     set({ user: null, token: null, isLoading: false });
-    window.location.href = "/login";
+    // Detect current locale from URL
+    const locale = window.location.pathname.match(/^\/(ar|en)/)?.[1] || "ar";
+    window.location.href = `/${locale}/login`;
   },
 
   initFromStorage: () => {

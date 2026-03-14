@@ -42,22 +42,22 @@ export default function MiniCalendar() {
   for (let d = 1; d <= daysInMonth; d++) cells.push(d);
 
   return (
-    <div className="rounded-lg bg-white p-4 shadow-sm border border-gray-100">
+    <div className="rounded-lg bg-white dark:bg-gray-900 p-4 shadow-sm dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-bold text-[#1E3A5F]">
+        <h3 className="text-sm font-bold text-[#1E3A5F] dark:text-white">
           {MONTHS[month]} {year}
         </h3>
         <div className="flex items-center gap-1">
           <button
             onClick={prev}
-            className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="rounded p-1 text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
           <button
             onClick={next}
-            className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="rounded p-1 text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
@@ -69,7 +69,7 @@ export default function MiniCalendar() {
         {DAYS.map((d) => (
           <div
             key={d}
-            className="text-center text-[10px] font-medium text-gray-400 py-1"
+            className="text-center text-[10px] font-medium text-gray-400 dark:text-gray-500 py-1"
           >
             {d}
           </div>
@@ -83,7 +83,7 @@ export default function MiniCalendar() {
             key={i}
             className={`flex h-7 w-7 items-center justify-center rounded text-xs mx-auto ${
               day
-                ? "text-gray-700 hover:bg-blue-50 cursor-pointer"
+                ? "text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer"
                 : ""
             }`}
           >

@@ -3,16 +3,21 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Building2, Menu, X } from "lucide-react";
-
-const navLinks = [
-  { label: "Features", id: "features" },
-  { label: "How it works", id: "how-it-works" },
-  { label: "Pricing", id: "pricing" },
-  { label: "Resources", id: "resources" },
-];
+import { useTranslations, useLocale } from "next-intl";
+import { LanguageToggle } from "@/components/shared/LanguageToggle";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const tl = useTranslations("landing");
+  const tn = useTranslations("nav");
+  const locale = useLocale();
+
+  const navLinks = [
+    { label: tl("navFeatures"), id: "features" },
+    { label: tl("navHowItWorks"), id: "how-it-works" },
+    { label: tl("navPricing"), id: "pricing" },
+    { label: tl("navResources"), id: "resources" },
+  ];
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -46,17 +51,18 @@ export default function Navbar() {
 
           {/* Right auth (desktop) */}
           <div className="hidden md:flex items-center gap-3">
+            <LanguageToggle />
             <Link
-              href="/login"
+              href={`/${locale}/login`}
               className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
-              Sign in
+              {tn("signIn")}
             </Link>
             <Link
-              href="/register"
+              href={`/${locale}/register`}
               className="rounded-lg bg-[#1E40AF] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#1a3899] transition-colors"
             >
-              Get Started Free
+              {tl("getStartedFree")}
             </Link>
           </div>
 
@@ -86,19 +92,20 @@ export default function Navbar() {
             ))}
           </div>
           <div className="flex flex-col gap-2 border-t border-gray-100 pt-3">
+            <LanguageToggle />
             <Link
-              href="/login"
+              href={`/${locale}/login`}
               className="rounded-lg px-4 py-2 text-center text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               onClick={() => setMobileOpen(false)}
             >
-              Sign in
+              {tn("signIn")}
             </Link>
             <Link
-              href="/register"
+              href={`/${locale}/register`}
               className="rounded-lg bg-[#1E40AF] px-4 py-2 text-center text-sm font-semibold text-white hover:bg-[#1a3899] transition-colors"
               onClick={() => setMobileOpen(false)}
             >
-              Get Started Free
+              {tl("getStartedFree")}
             </Link>
           </div>
         </div>

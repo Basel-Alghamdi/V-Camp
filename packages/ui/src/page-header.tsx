@@ -16,7 +16,7 @@ export function PageHeader({ title, subtitle, action }: PageHeaderProps) {
           {title}
         </h1>
         {subtitle && (
-          <p className="mt-1 text-sm text-gray-500">{subtitle}</p>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>
         )}
       </div>
       {action && <div>{action}</div>}

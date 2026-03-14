@@ -24,7 +24,8 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401) {
       removeToken();
       if (typeof window !== "undefined") {
-        window.location.href = "/login";
+        const locale = window.location.pathname.match(/^\/(ar|en)/)?.[1] || "ar";
+        window.location.href = `/${locale}/login`;
       }
     }
     return Promise.reject(error);

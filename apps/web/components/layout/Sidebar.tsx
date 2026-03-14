@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import {
   LayoutDashboard,
   Wrench,
@@ -15,21 +16,20 @@ import {
 } from "lucide-react";
 
 interface NavItem {
-  label: string;
+  labelKey: string;
   href: string;
   icon: React.ElementType;
   disabled?: boolean;
-  badge?: string;
 }
 
 const navItems: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Maintenens", href: "/maintenance", icon: Wrench },
-  { label: "Voting", href: "/voting", icon: CheckSquare, disabled: true, badge: "Phase 2" },
-  { label: "Announcement", href: "/announcements", icon: Megaphone },
-  { label: "Service Provider", href: "/service-providers", icon: Users },
-  { label: "Activity log", href: "/activity-log", icon: ClipboardList },
-  { label: "Documents", href: "/documents", icon: FileText },
+  { labelKey: "dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { labelKey: "maintenance", href: "/maintenance", icon: Wrench },
+  { labelKey: "voting", href: "/voting", icon: CheckSquare, disabled: true },
+  { labelKey: "announcements", href: "/announcements", icon: Megaphone },
+  { labelKey: "serviceProviders", href: "/service-providers", icon: Users },
+  { labelKey: "activityLog", href: "/activity-log", icon: ClipboardList },
+  { labelKey: "documents", href: "/documents", icon: FileText },
 ];
 
 interface SidebarProps {
@@ -39,21 +39,26 @@ interface SidebarProps {
 
 export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const pathname = usePathname();
+  const t = useTranslations("nav");
+  const tc = useTranslations("common");
+  const locale = useLocale();
+  const isRTL = locale === "ar";
 
   function isActive(href: string) {
-    if (href === "/dashboard") return pathname === "/dashboard";
-    return pathname.startsWith(href);
+    const localizedHref = `/${locale}${href}`;
+    if (href === "/dashboard") return pathname === localizedHref;
+    return pathname.startsWith(localizedHref);
   }
 
   return (
     <aside
-      className={`fixed left-0 top-0 z-30 flex h-screen flex-col bg-[#1E3A5F] transition-all duration-300 ${
-        collapsed ? "w-16" : "w-60"
-      }`}
+      className={`fixed top-0 z-30 flex h-screen flex-col bg-[#1E3A5F] dark:bg-gray-900 transition-all duration-300 ${
+        isRTL ? "right-0" : "left-0"
+      } ${collapsed ? "w-16" : "w-60"}`}
     >
       {/* Logo area */}
       <div className="flex h-16 items-center gap-3 border-b border-white/10 px-4">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#2B4F7E]">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#2B4F7E] dark:bg-gray-700">
           <CreditCard className="h-4 w-4 text-white" />
         </div>
         {!collapsed && (
@@ -66,23 +71,26 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         {navItems.map((item) => {
           const active = isActive(item.href);
           const Icon = item.icon;
+          const label = t(item.labelKey);
+          const localizedHref = `/${locale}${item.href}`;
 
           if (item.disabled) {
             return (
               <div
-                key={item.label}
+                key={item.labelKey}
                 className={`group relative flex items-center gap-3 rounded-md px-3 py-2.5 text-gray-500 cursor-not-allowed ${
                   collapsed ? "justify-center" : ""
                 }`}
               >
                 <Icon className="h-5 w-5 shrink-0 opacity-50" />
                 {!collapsed && (
-                  <span className="text-sm opacity-50">{item.label}</span>
+                  <span className="text-sm opacity-50">{label}</span>
                 )}
-                {/* Tooltip for collapsed mode */}
                 {collapsed && (
-                  <div className="absolute left-full ml-2 hidden rounded-md bg-gray-900 px-2 py-1 text-xs text-white group-hover:block whitespace-nowrap z-50">
-                    {item.label}
+                  <div className={`absolute hidden rounded-md bg-gray-900 dark:bg-gray-700 px-2 py-1 text-xs text-white group-hover:block whitespace-nowrap z-50 ${
+                    isRTL ? "right-full mr-2" : "left-full ml-2"
+                  }`}>
+                    {label}
                   </div>
                 )}
               </div>
@@ -91,24 +99,29 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
           return (
             <Link
-              key={item.label}
-              href={item.href}
+              key={item.labelKey}
+              href={localizedHref}
               className={`group relative flex items-center gap-3 rounded-md px-3 py-2.5 transition-colors ${
                 collapsed ? "justify-center" : ""
               } ${
                 active
-                  ? "border-l-[3px] border-[#1E40AF] bg-white/5 text-[#008080]"
-                  : "border-l-[3px] border-transparent text-[#9CA3AF] hover:bg-white/5 hover:text-white"
+                  ? isRTL
+                    ? "border-r-[3px] border-[#1E40AF] bg-white/5 text-[#008080] dark:text-teal-400"
+                    : "border-l-[3px] border-[#1E40AF] bg-white/5 text-[#008080] dark:text-teal-400"
+                  : isRTL
+                    ? "border-r-[3px] border-transparent text-[#9CA3AF] hover:bg-white/5 hover:text-white"
+                    : "border-l-[3px] border-transparent text-[#9CA3AF] hover:bg-white/5 hover:text-white"
               }`}
             >
               <Icon className="h-5 w-5 shrink-0" />
               {!collapsed && (
-                <span className="text-sm font-medium">{item.label}</span>
+                <span className="text-sm font-medium">{label}</span>
               )}
-              {/* Tooltip for collapsed mode */}
               {collapsed && (
-                <div className="absolute left-full ml-2 hidden rounded-md bg-gray-900 px-2 py-1 text-xs text-white group-hover:block whitespace-nowrap z-50">
-                  {item.label}
+                <div className={`absolute hidden rounded-md bg-gray-900 dark:bg-gray-700 px-2 py-1 text-xs text-white group-hover:block whitespace-nowrap z-50 ${
+                  isRTL ? "right-full mr-2" : "left-full ml-2"
+                }`}>
+                  {label}
                 </div>
               )}
             </Link>
@@ -123,7 +136,11 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
           className="flex w-full items-center justify-center rounded-md p-2 text-[#9CA3AF] hover:bg-white/5 hover:text-white transition-colors"
         >
           <svg
-            className={`h-5 w-5 transition-transform ${collapsed ? "rotate-180" : ""}`}
+            className={`h-5 w-5 transition-transform ${
+              isRTL
+                ? collapsed ? "" : "rotate-180"
+                : collapsed ? "rotate-180" : ""
+            }`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

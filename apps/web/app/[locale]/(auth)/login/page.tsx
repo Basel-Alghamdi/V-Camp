@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useTranslations, useLocale } from "next-intl";
 import apiClient from "@/lib/api-client";
 import { setToken } from "@/lib/auth";
 import { useAuthStore } from "@/store/auth.store";
@@ -19,6 +20,8 @@ type LoginForm = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
+  const t = useTranslations("auth");
+  const locale = useLocale();
   const { setAuth } = useAuthStore();
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +50,7 @@ export default function LoginPage() {
         },
         token
       );
-      router.push("/dashboard");
+      router.push(`/${locale}/dashboard`);
     } catch (err: unknown) {
       if (
         err &&
@@ -62,15 +65,15 @@ export default function LoginPage() {
       ) {
         setError(String((err.response as { data: { error: string } }).data.error));
       } else {
-        setError("Invalid email or password. Please try again.");
+        setError(t("invalidCredentials"));
       }
     }
   }
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1E3A5F]">Welcome back</h1>
-      <p className="mt-1 text-sm text-gray-500">Sign in to your account</p>
+      <h1 className="text-2xl font-bold text-[#1E3A5F]">{t("welcomeBack")}</h1>
+      <p className="mt-1 text-sm text-gray-500">{t("signInSubtitle")}</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
         {/* Email */}
@@ -79,12 +82,12 @@ export default function LoginPage() {
             htmlFor="email"
             className="block text-sm font-medium text-gray-700"
           >
-            Email
+            {t("email")}
           </label>
           <input
             id="email"
             type="email"
-            placeholder="Enter your email"
+            placeholder={t("emailPlaceholder")}
             {...register("email")}
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm placeholder-gray-400 shadow-sm focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
           />
@@ -99,13 +102,13 @@ export default function LoginPage() {
             htmlFor="password"
             className="block text-sm font-medium text-gray-700"
           >
-            Password
+            {t("password")}
           </label>
           <div className="relative">
             <input
               id="password"
               type={showPassword ? "text" : "password"}
-              placeholder="Enter your password"
+              placeholder={t("passwordPlaceholder")}
               {...register("password")}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2.5 pr-10 text-sm placeholder-gray-400 shadow-sm focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
             />
@@ -170,17 +173,17 @@ export default function LoginPage() {
           disabled={isSubmitting}
           className="w-full rounded-md bg-[#1E40AF] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#1E3A9F] focus:outline-none focus:ring-2 focus:ring-[#1E40AF] focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
         >
-          {isSubmitting ? "Signing in..." : "Sign In"}
+          {isSubmitting ? t("signingIn") : t("signIn")}
         </button>
       </form>
 
       <p className="mt-6 text-center text-sm text-gray-500">
-        Don&apos;t have an account?{" "}
+        {t("noAccount")}{" "}
         <Link
-          href="/register"
+          href={`/${locale}/register`}
           className="font-medium text-[#1E40AF] hover:underline"
         >
-          Register
+          {t("registerLink")}
         </Link>
       </p>
     </div>

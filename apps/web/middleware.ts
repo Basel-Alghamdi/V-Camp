@@ -1,42 +1,43 @@
+import createMiddleware from "next-intl/middleware";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const PUBLIC_PATHS = ["/login", "/register"];
+const intlMiddleware = createMiddleware({
+  locales: ["ar", "en"],
+  defaultLocale: "ar",
+  localePrefix: "always",
+});
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Allow landing page
-  if (pathname === "/") {
-    return NextResponse.next();
-  }
+  // Let next-intl handle locale routing first
+  const response = intlMiddleware(request);
 
-  // Allow public routes
-  if (PUBLIC_PATHS.some((path) => pathname.startsWith(path))) {
-    return NextResponse.next();
-  }
+  // Extract locale from pathname
+  const localeMatch = pathname.match(/^\/(ar|en)(\/|$)/);
+  const locale = localeMatch ? localeMatch[1] : "ar";
 
-  // Allow static assets and API routes
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
-    pathname.includes(".")
-  ) {
-    return NextResponse.next();
+  // Public paths (with locale prefix)
+  const pathWithoutLocale = pathname.replace(/^\/(ar|en)/, "") || "/";
+  const PUBLIC_PATHS = ["/", "/login", "/register"];
+
+  if (PUBLIC_PATHS.includes(pathWithoutLocale)) {
+    return response;
   }
 
   // Check for auth token in cookies
   const token = request.cookies.get("op_token")?.value;
 
   if (!token) {
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("from", pathname);
+    const loginUrl = new URL(`/${locale}/login`, request.url);
+    loginUrl.searchParams.set("from", pathWithoutLocale);
     return NextResponse.redirect(loginUrl);
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
 };

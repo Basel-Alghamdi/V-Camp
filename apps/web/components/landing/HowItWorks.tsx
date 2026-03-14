@@ -1,45 +1,48 @@
-const steps = [
-  {
-    number: 1,
-    title: "Set up your association",
-    description:
-      "Create your account, invite board members, and configure roles and permissions under 5 minutes.",
-  },
-  {
-    number: 2,
-    title: "Onboard your team & vendors",
-    description:
-      "Add building managers, service vendors, and connect owners automatically learn to the platform.",
-  },
-  {
-    number: 3,
-    title: "Manage everything in one place",
-    description:
-      "Residents submit requests, owners vote, managers and owner visibility across all activities.",
-  },
-];
+"use client";
+
+import { useTranslations } from "next-intl";
 
 export default function HowItWorks() {
+  const t = useTranslations("landing");
+
+  const steps = [
+    {
+      number: 1,
+      title: t("howStep1"),
+      description: t("howStep1Desc"),
+    },
+    {
+      number: 2,
+      title: t("howStep2"),
+      description: t("howStep2Desc"),
+    },
+    {
+      number: 3,
+      title: t("howStep3"),
+      description: t("howStep3Desc"),
+    },
+  ];
+
   return (
     <section id="how-it-works" className="bg-[#F8F9FB] py-20 px-6">
       <div className="max-w-3xl mx-auto text-center mb-16">
         <p className="text-sm font-semibold text-[#1E40AF] uppercase tracking-wider">
-          How It Works
+          {t("howItWorksEyebrow")}
         </p>
         <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-[#1E3A5F]">
-          Up and running in
+          {t("howItWorksTitle1")}
           <br />
-          <span className="text-[#1E40AF]">minutes</span>, not months
+          <span className="text-[#1E40AF]">{t("howItWorksTitle2")}</span>{t("howItWorksTitle3")}
         </h2>
       </div>
 
       <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-        {/* Connector lines between steps (desktop) */}
-        <div className="hidden md:block absolute top-7 left-[33.33%] w-[33.33%] h-0.5 bg-gray-200" />
+        {/* Connector line between step circles (desktop) */}
+        <div className="hidden md:block absolute top-7 left-[16.67%] right-[16.67%] h-0.5 bg-gray-200 z-0" />
 
         {steps.map((step) => (
           <div key={step.number} className="text-center">
-            <div className="mx-auto w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold text-white mb-6 bg-[#1E40AF]">
+            <div className="relative z-10 mx-auto w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold text-white mb-6 bg-[#1E40AF]">
               {step.number}
             </div>
             <h3 className="text-lg font-semibold text-[#1E3A5F] mb-3">

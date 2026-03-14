@@ -1,5 +1,8 @@
+"use client";
+
 import { Check } from "lucide-react";
 import Link from "next/link";
+import { useTranslations, useLocale } from "next-intl";
 
 const plans = [
   {
@@ -58,19 +61,20 @@ const plans = [
 ];
 
 export default function PricingSection() {
+  const t = useTranslations("landing");
+  const locale = useLocale();
+
   return (
     <section className="bg-white py-20 px-6" id="pricing">
       <div className="max-w-3xl mx-auto text-center mb-16">
         <p className="text-sm font-semibold text-[#1E40AF] uppercase tracking-wider">
-          Pricing
+          {t("pricingEyebrow")}
         </p>
         <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-[#1E3A5F]">
-          Simple, transparent
-          <br />
-          pricing
+          {t("pricingTitle")}
         </h2>
         <p className="mt-4 text-lg text-gray-500">
-          Start free, scale as you grow with flexible plans. No long-term commitments.
+          {t("pricingSubtitle")}
         </p>
       </div>
 
@@ -86,7 +90,7 @@ export default function PricingSection() {
           >
             {plan.highlighted && (
               <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-amber-400 text-amber-900 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
-                Most Popular
+                {t("mostPopular")}
               </span>
             )}
 
@@ -117,7 +121,7 @@ export default function PricingSection() {
 
             <div className="mt-8">
               <Link
-                href={plan.href}
+                href={`/${locale}${plan.href}`}
                 className={`w-full block text-center rounded-lg py-3 text-sm font-semibold transition ${
                   plan.highlighted
                     ? "bg-[#1E40AF] text-white hover:bg-[#1a3899]"

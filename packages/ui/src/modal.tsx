@@ -54,7 +54,7 @@ export function Modal({
 
       {/* Panel */}
       <div
-        className={`relative w-full ${sizeClasses[size]} mx-4 rounded-xl bg-white p-6 shadow-xl`}
+        className={`relative w-full ${sizeClasses[size]} mx-4 rounded-xl bg-white dark:bg-gray-900 p-6 shadow-xl dark:shadow-gray-900/50`}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
@@ -63,7 +63,7 @@ export function Modal({
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+            className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
           >
             <svg
               className="h-5 w-5"

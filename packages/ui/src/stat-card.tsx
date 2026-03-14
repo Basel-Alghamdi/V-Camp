@@ -12,9 +12,9 @@ export interface StatCardProps {
 }
 
 const variantIconBg: Record<string, string> = {
-  default: "bg-blue-50 text-[var(--color-action)]",
-  warning: "bg-amber-50 text-[var(--color-warning)]",
-  success: "bg-green-50 text-[var(--color-success)]",
+  default: "bg-blue-50 dark:bg-blue-900/30 text-[var(--color-action)]",
+  warning: "bg-amber-50 dark:bg-amber-900/30 text-[var(--color-warning)]",
+  success: "bg-green-50 dark:bg-green-900/30 text-[var(--color-success)]",
 };
 
 export function StatCard({
@@ -26,10 +26,10 @@ export function StatCard({
   variant = "default",
 }: StatCardProps) {
   return (
-    <div className="relative flex flex-col justify-between rounded-lg bg-white p-5 shadow-sm border border-gray-100 min-h-[120px]">
+    <div className="relative flex flex-col justify-between rounded-lg bg-white dark:bg-gray-900 p-5 shadow-sm dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800 min-h-[120px]">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm text-gray-500">{title}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
           <p className="mt-1 text-2xl font-bold text-[var(--color-primary)]">
             {value}
           </p>

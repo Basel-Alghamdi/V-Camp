@@ -1,4 +1,7 @@
+"use client";
+
 import { Star } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const testimonials = [
   {
@@ -28,23 +31,25 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
+  const t = useTranslations("landing");
+
   return (
     <section className="bg-[#F8F9FB] py-20 px-6">
       <div className="text-center mb-16">
         <p className="text-sm font-semibold text-[#1E40AF] uppercase tracking-wider">
-          Community Stories
+          {t("testimonialEyebrow")}
         </p>
         <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-[#1E3A5F]">
-          Loved by community
+          {t("testimonialTitle1")}
           <br />
-          managers everywhere
+          {t("testimonialTitle2")}
         </h2>
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-        {testimonials.map((t) => (
+        {testimonials.map((item) => (
           <div
-            key={t.name}
+            key={item.name}
             className="bg-white rounded-xl p-6 shadow-sm border border-gray-100"
           >
             <div className="flex gap-1 mb-4">
@@ -57,20 +62,20 @@ export default function Testimonials() {
             </div>
 
             <p className="text-sm text-gray-600 leading-relaxed mb-6">
-              &ldquo;{t.quote}&rdquo;
+              &ldquo;{item.quote}&rdquo;
             </p>
 
             <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white ${t.avatarColor}`}
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white ${item.avatarColor}`}
               >
-                {t.initials}
+                {item.initials}
               </div>
               <div>
                 <p className="text-sm font-semibold text-[#1E3A5F]">
-                  {t.name}
+                  {item.name}
                 </p>
-                <p className="text-xs text-gray-400">{t.role}</p>
+                <p className="text-xs text-gray-400">{item.role}</p>
               </div>
             </div>
           </div>

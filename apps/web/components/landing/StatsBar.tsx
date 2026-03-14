@@ -1,34 +1,40 @@
-const stats = [
-  {
-    value: "500+",
-    label: "Owners Associations",
-    sublabel: "using AssociO",
-  },
-  {
-    value: "$2.4M",
-    label: "Transactions Processed",
-    sublabel: "Monthly",
-  },
-  {
-    value: "98%",
-    label: "On-Time Vendor Due",
-    sublabel: "for requests",
-  },
-  {
-    value: "12K+",
-    label: "Maintenance Activity",
-    sublabel: "Managed using the platform",
-  },
-];
+"use client";
+
+import { useTranslations } from "next-intl";
 
 export default function StatsBar() {
+  const t = useTranslations("landing");
+
+  const stats = [
+    {
+      value: "500+",
+      label: t("statsBuildings"),
+      sublabel: t("statsUsingPlatform"),
+    },
+    {
+      value: "$2.4M",
+      label: t("statsMoney"),
+      sublabel: t("statsMonthly"),
+    },
+    {
+      value: "98%",
+      label: t("statsRate"),
+      sublabel: t("statsForRequests"),
+    },
+    {
+      value: "12K+",
+      label: t("statsResidents"),
+      sublabel: t("statsManaged"),
+    },
+  ];
+
   return (
     <section className="bg-[#1E3A5F] py-14">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {stats.map((stat, i) => (
             <div
-              key={stat.label}
+              key={i}
               className={
                 i < 3 ? "md:border-r md:border-white/20" : ""
               }

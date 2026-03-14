@@ -1,27 +1,32 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function CTASection() {
+  const t = useTranslations("landing");
+  const locale = useLocale();
+
   return (
     <section className="bg-[#1E3A5F] py-20 px-6">
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight">
-          Ready to transform
+          {t("ctaTitle1")}
           <br />
-          how you manage your community?
+          {t("ctaTitle2")}
         </h2>
         <p className="mt-4 text-lg text-gray-300 max-w-xl mx-auto">
-          Join 500+ associations who trust our platform with safety, shared
-          finances, and great value — with one powerful platform.
+          {t("ctaSubtitle")}
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Link
-            href="/register"
+            href={`/${locale}/register`}
             className="bg-white text-[#1E3A5F] rounded-lg px-8 py-3.5 text-sm font-semibold hover:bg-gray-100 transition"
           >
-            Start free trial
+            {t("ctaStart")}
           </Link>
           <button className="border border-white text-white rounded-lg px-8 py-3.5 text-sm font-semibold hover:bg-white/10 transition">
-            Schedule a demo
+            {t("ctaDemo")}
           </button>
         </div>
       </div>

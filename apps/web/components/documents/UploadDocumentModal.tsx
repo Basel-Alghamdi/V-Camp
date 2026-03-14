@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Upload, File, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Modal } from "@owners-platform/ui";
 import type { DocumentCategory } from "@/hooks/use-documents";
 
@@ -40,6 +41,7 @@ export default function UploadDocumentModal({
   onClose,
   onSubmit,
 }: UploadDocumentModalProps) {
+  const t = useTranslations("documents");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<{ name: string; size: string; raw: File } | null>(null);
   const [dragOver, setDragOver] = useState(false);
@@ -78,17 +80,17 @@ export default function UploadDocumentModal({
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="Upload Document" size="md">
+    <Modal isOpen={isOpen} onClose={handleClose} title={t("uploadTitle")} size="md">
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
         {/* Document Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Document Name
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            {t("documentName")}
           </label>
           <input
             {...register("name")}
-            placeholder="Enter document name"
-            className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm placeholder-gray-400 focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
+            placeholder={t("namePlaceholder")}
+            className="w-full rounded-md border border-gray-300 dark:border-gray-700 px-3 py-2.5 text-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
           />
           {errors.name && (
             <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>
@@ -97,19 +99,19 @@ export default function UploadDocumentModal({
 
         {/* Category */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Category
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            {t("category")}
           </label>
           <select
             {...register("category")}
-            className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm text-gray-700 focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
+            className="w-full rounded-md border border-gray-300 dark:border-gray-700 px-3 py-2.5 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-900 focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
           >
-            <option value="">Select category</option>
-            <option value="Invoice">Invoice</option>
-            <option value="Contract">Contract</option>
-            <option value="Report">Report</option>
-            <option value="Vendor">Vendor</option>
-            <option value="Other">Other</option>
+            <option value="">{t("selectCategory")}</option>
+            <option value="Invoice">{t("invoice")}</option>
+            <option value="Contract">{t("contract")}</option>
+            <option value="Report">{t("report")}</option>
+            <option value="Vendor">{t("vendorDoc")}</option>
+            <option value="Other">{t("other")}</option>
           </select>
           {errors.category && (
             <p className="mt-1 text-xs text-red-500">{errors.category.message}</p>
@@ -118,13 +120,13 @@ export default function UploadDocumentModal({
 
         {/* Related To */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Related To
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            {t("relatedTo")}
           </label>
           <input
             {...register("relatedTo")}
-            placeholder="e.g., Maintenance Request #1"
-            className="w-full rounded-md border border-gray-300 px-3 py-2.5 text-sm placeholder-gray-400 focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
+            placeholder={t("relatedToPlaceholder")}
+            className="w-full rounded-md border border-gray-300 dark:border-gray-700 px-3 py-2.5 text-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-200 focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
           />
           {errors.relatedTo && (
             <p className="mt-1 text-xs text-red-500">{errors.relatedTo.message}</p>
@@ -133,8 +135,8 @@ export default function UploadDocumentModal({
 
         {/* File Upload */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            File
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+            {t("file")}
           </label>
           <input
             ref={fileInputRef}
@@ -147,18 +149,18 @@ export default function UploadDocumentModal({
           />
 
           {selectedFile ? (
-            <div className="flex items-center gap-3 rounded-md border border-gray-200 bg-gray-50 px-3 py-3">
-              <File className="h-5 w-5 text-gray-400" />
+            <div className="flex items-center gap-3 rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-3">
+              <File className="h-5 w-5 text-gray-400 dark:text-gray-500" />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-700 truncate">
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
                   {selectedFile.name}
                 </p>
-                <p className="text-xs text-gray-400">{selectedFile.size}</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500">{selectedFile.size}</p>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedFile(null)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -180,14 +182,14 @@ export default function UploadDocumentModal({
               }}
               className={`flex w-full flex-col items-center gap-2 rounded-md border-2 border-dashed px-4 py-8 transition-colors ${
                 dragOver
-                  ? "border-[#1E40AF] bg-blue-50"
-                  : "border-gray-300 hover:border-gray-400"
+                  ? "border-[#1E40AF] bg-blue-50 dark:bg-blue-900/30"
+                  : "border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
               }`}
             >
-              <Upload className="h-8 w-8 text-gray-400" />
-              <p className="text-sm text-gray-500">
-                Drag & drop or{" "}
-                <span className="font-medium text-[#1E40AF]">click to browse</span>
+              <Upload className="h-8 w-8 text-gray-400 dark:text-gray-500" />
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {t("dragDrop")}{" "}
+                <span className="font-medium text-[#1E40AF]">{t("clickBrowse")}</span>
               </p>
             </button>
           )}
@@ -198,16 +200,16 @@ export default function UploadDocumentModal({
           <button
             type="button"
             onClick={handleClose}
-            className="flex-1 rounded-md border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="flex-1 rounded-md border border-gray-300 dark:border-gray-700 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
           >
-            Cancel
+            {t("cancel")}
           </button>
           <button
             type="submit"
             disabled={!isValid || !selectedFile}
             className="flex-1 rounded-md bg-[#1E40AF] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1a3899] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            Upload Document
+            {t("upload")}
           </button>
         </div>
       </form>
