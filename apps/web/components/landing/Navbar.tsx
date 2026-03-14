@@ -6,7 +6,7 @@ import { Building2, Menu, X } from "lucide-react";
 
 const navLinks = [
   { label: "Features", id: "features" },
-  { label: "How it Works", id: "how-it-works" },
+  { label: "How it works", id: "how-it-works" },
   { label: "Pricing", id: "pricing" },
   { label: "Resources", id: "resources" },
 ];
@@ -23,18 +23,15 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white border-b border-gray-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Left: Logo */}
+          {/* Logo */}
           <div className="flex items-center gap-2">
-            <Building2 className="h-6 w-6" style={{ color: "#1E3A5F" }} />
-            <span
-              className="text-lg font-bold"
-              style={{ color: "#1E3A5F" }}
-            >
-              Owners Platform
-            </span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1E40AF]">
+              <Building2 className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-lg font-bold text-[#1E3A5F]">AssociO</span>
           </div>
 
-          {/* Center: Nav links (desktop) */}
+          {/* Center nav links (desktop) */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <button
@@ -47,33 +44,29 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Right: Auth buttons (desktop) */}
+          {/* Right auth (desktop) */}
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/login"
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
-              Sign In
+              Sign in
             </Link>
             <Link
               href="/register"
-              className="rounded-lg bg-[#1E40AF] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1E3A9F] transition-colors"
+              className="rounded-lg bg-[#1E40AF] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#1a3899] transition-colors"
             >
               Get Started Free
             </Link>
           </div>
 
-          {/* Mobile: Hamburger */}
+          {/* Mobile hamburger */}
           <button
             className="md:hidden p-2 text-gray-600 hover:text-gray-900"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
-            {mobileOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
@@ -95,14 +88,14 @@ export default function Navbar() {
           <div className="flex flex-col gap-2 border-t border-gray-100 pt-3">
             <Link
               href="/login"
-              className="rounded-lg border border-gray-300 px-4 py-2 text-center text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              className="rounded-lg px-4 py-2 text-center text-sm text-gray-700 hover:bg-gray-50 transition-colors"
               onClick={() => setMobileOpen(false)}
             >
-              Sign In
+              Sign in
             </Link>
             <Link
               href="/register"
-              className="rounded-lg bg-[#1E40AF] px-4 py-2 text-center text-sm font-semibold text-white hover:bg-[#1E3A9F] transition-colors"
+              className="rounded-lg bg-[#1E40AF] px-4 py-2 text-center text-sm font-semibold text-white hover:bg-[#1a3899] transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               Get Started Free

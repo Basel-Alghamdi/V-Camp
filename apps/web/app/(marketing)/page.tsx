@@ -1,7 +1,7 @@
 import Navbar from "@/components/landing/Navbar";
 import HeroSection from "@/components/landing/HeroSection";
-import StatsBar from "@/components/landing/StatsBar";
 import FeaturesSection from "@/components/landing/FeaturesSection";
+import StatsBar from "@/components/landing/StatsBar";
 import HowItWorks from "@/components/landing/HowItWorks";
 import DashboardPreview from "@/components/landing/DashboardPreview";
 import Testimonials from "@/components/landing/Testimonials";
@@ -14,8 +14,8 @@ export default function LandingPage() {
     <div className="min-h-screen">
       <Navbar />
       <HeroSection />
-      <StatsBar />
       <FeaturesSection />
+      <StatsBar />
       <HowItWorks />
       <DashboardPreview />
       <Testimonials />

@@ -13,40 +13,40 @@ const features = [
     iconBg: "bg-blue-50",
     iconColor: "text-blue-600",
     title: "Maintenance Management",
-    desc: "Track every request from submission to resolution. Assign vendors, set deadlines, and keep residents informed at every step.",
-    link: "Explore Maintenance →",
+    desc: "Track every request from submission to resolution. Assign vendors, set priorities, and keep residents informed at every step.",
+    link: "Explore maintenance",
   },
   {
     icon: Megaphone,
     iconBg: "bg-purple-50",
     iconColor: "text-purple-600",
-    title: "Community Announcements",
-    desc: "From urgent alerts to routine updates, keep every resident informed instantly with priority-tagged broadcasts.",
-    link: "Transparent updates →",
+    title: "Community Communication",
+    desc: "From urgent notices, meeting agendas, and community updates efficiently with priority-tagged broadcasting.",
+    link: "Transparent updates",
   },
   {
     icon: Users,
     iconBg: "bg-green-50",
     iconColor: "text-green-600",
-    title: "Service Provider Directory",
-    desc: "Manage your trusted vendors — electricians, plumbers, security and cleaning — with ratings, contracts, and scheduling.",
-    link: "Verified Contractors →",
+    title: "Service Providers",
+    desc: "Manage your trusted vendor network — electricians, plumbers, security and cleaning — with ratings, contracts, and scheduling.",
+    link: "Verified Contractors",
   },
   {
     icon: FileText,
     iconBg: "bg-amber-50",
     iconColor: "text-amber-600",
     title: "Document Center",
-    desc: "Organize invoices, contracts, inspection reports, and vendor files in a searchable, categorized vault.",
-    link: "Find files instantly →",
+    desc: "Organize invoices, contracts, inspection reports, and vendor files that are always accessible and in compliance.",
+    link: "Find files instantly",
   },
   {
     icon: CheckSquare,
     iconBg: "bg-red-50",
     iconColor: "text-red-600",
     title: "Community Voting",
-    desc: "Create polls and let unit owners vote on important decisions digitally — fully documented with timestamps.",
-    link: "Transparent voting →",
+    desc: "Create polls and vote on important decisions digitally — fully documented, transparent, and accessible to all owners.",
+    link: "Transparent & accessible",
   },
   {
     icon: DollarSign,
@@ -54,7 +54,7 @@ const features = [
     iconColor: "text-teal-600",
     title: "Budget & Finance Overview",
     desc: "Get a clear view of your association finances — collected fees, monthly expenses, and full transaction history.",
-    link: "Always in control →",
+    link: "Always in control",
   },
 ];
 
@@ -62,15 +62,17 @@ export default function FeaturesSection() {
   return (
     <section className="bg-white py-20 px-6" id="features">
       <div className="max-w-3xl mx-auto text-center mb-16">
-        <p className="text-sm font-semibold text-[#008080] uppercase tracking-wider">
-          Everything you need
+        <p className="text-sm font-semibold text-[#1E40AF] uppercase tracking-wider">
+          Platform Features
         </p>
         <h2 className="mt-3 text-3xl lg:text-4xl font-bold text-[#1E3A5F]">
-          Powerful tools for modern property management
+          Everything your association
+          <br />
+          needs to <span className="text-[#1E40AF]">run smoothly</span>
         </h2>
-        <p className="mt-4 text-lg text-gray-500">
-          Streamline operations, improve communication, and keep your community
-          running smoothly — all from one platform.
+        <p className="mt-4 text-lg text-gray-500 max-w-2xl mx-auto">
+          Purpose-built tools to automate maintenance, engage board members, and
+          residents — all on one unified platform.
         </p>
       </div>
 
@@ -93,8 +95,8 @@ export default function FeaturesSection() {
               <p className="text-sm text-gray-500 leading-relaxed mb-4">
                 {feature.desc}
               </p>
-              <span className="text-sm font-medium text-[#008080] group-hover:underline">
-                {feature.link}
+              <span className="text-sm font-medium text-[#1E40AF] group-hover:underline cursor-pointer">
+                {feature.link} &rarr;
               </span>
             </div>
           );

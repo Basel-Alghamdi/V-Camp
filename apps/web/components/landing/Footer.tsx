@@ -1,27 +1,25 @@
-import { Building2, Twitter, Linkedin, Instagram } from "lucide-react";
+import { Building2 } from "lucide-react";
 
 export default function Footer() {
   return (
     <footer className="bg-[#0F172A] text-white py-12 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Col 1 */}
-          <div>
+          {/* Col 1 — Brand */}
+          <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <Building2 className="h-6 w-6 text-white" />
-              <span className="font-bold text-lg">Owners Platform</span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1E40AF]">
+                <Building2 className="h-4 w-4 text-white" />
+              </div>
+              <span className="font-bold text-lg">AssociO</span>
             </div>
-            <p className="text-sm text-gray-400 mb-6 max-w-xs">
-              The smart platform for Owners Associations in Saudi Arabia.
+            <p className="text-sm text-gray-400 mb-6 max-w-xs leading-relaxed">
+              The smart platform for Owners Associations to manage their
+              communities with clarity, efficiency, and transparency.
             </p>
-            <div className="flex gap-3">
-              <Twitter className="h-5 w-5 text-gray-400 hover:text-white transition-colors cursor-pointer" />
-              <Linkedin className="h-5 w-5 text-gray-400 hover:text-white transition-colors cursor-pointer" />
-              <Instagram className="h-5 w-5 text-gray-400 hover:text-white transition-colors cursor-pointer" />
-            </div>
           </div>
 
-          {/* Col 2 */}
+          {/* Col 2 — Product */}
           <div>
             <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
               Product
@@ -34,42 +32,29 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Col 3 */}
-          <div>
-            <h4 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-              Company
-            </h4>
-            <div className="space-y-3">
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">About</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Blog</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Careers</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Press</p>
-            </div>
-          </div>
-
-          {/* Col 4 */}
+          {/* Col 3 — Company */}
           <div>
             <h4
               id="resources"
               className="text-sm font-semibold text-white uppercase tracking-wider mb-4"
             >
-              Resources
+              Company
             </h4>
             <div className="space-y-3">
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Docs</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Support</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Community</p>
-              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Status</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Blog</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Help Center</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">About</p>
+              <p className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer">Careers</p>
             </div>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="border-t border-gray-700 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-400">
-            &copy; 2026 Owners Platform. All rights reserved.
+            &copy; 2026 AssociO. All rights reserved.
           </p>
-          <div className="flex gap-4">
+          <div className="flex gap-6">
             <span className="text-sm text-gray-400 hover:text-white cursor-pointer">Privacy Policy</span>
             <span className="text-sm text-gray-400 hover:text-white cursor-pointer">Terms of Service</span>
           </div>
