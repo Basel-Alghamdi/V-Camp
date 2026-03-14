@@ -98,7 +98,7 @@ export default function MaintenancePage() {
       />
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 mb-6">
         {isLoading ? (
           [1, 2, 3, 4].map((i) => (
             <div key={i} className="h-28 animate-pulse rounded-lg bg-gray-100 dark:bg-gray-700" />
@@ -114,12 +114,12 @@ export default function MaintenancePage() {
       </div>
 
       {/* Section header */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-[#1E3A5F] dark:text-white">{t("recentRequests")}</h2>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+        <h2 className="text-lg sm:text-xl font-bold text-[#1E3A5F] dark:text-white">{t("recentRequests")}</h2>
         {canCreate && (
           <button
             onClick={() => setCreateOpen(true)}
-            className="inline-flex items-center gap-2 rounded-md bg-[#1E40AF] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1a3899] transition-colors"
+            className="inline-flex items-center gap-2 rounded-md bg-[#1E40AF] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1a3899] transition-colors w-full sm:w-auto justify-center"
           >
             <Plus className="h-4 w-4" />
             {t("newRequest")}
@@ -129,7 +129,7 @@ export default function MaintenancePage() {
 
       {/* Filter Bar */}
       <div className="flex flex-wrap items-end gap-4 mb-4">
-        <div className="flex-1 min-w-[250px]">
+        <div className="w-full sm:flex-1 min-w-0">
           <label className="block text-xs font-medium uppercase text-gray-500 dark:text-gray-400 mb-1">{t("search")}</label>
           <input
             type="text"
@@ -139,7 +139,7 @@ export default function MaintenancePage() {
             className="w-full rounded-md border border-gray-300 dark:border-gray-600 px-3 py-2 text-sm placeholder-gray-400 dark:placeholder-gray-500 dark:bg-gray-900 dark:text-gray-100 focus:border-[#1E40AF] focus:outline-none focus:ring-1 focus:ring-[#1E40AF]"
           />
         </div>
-        <div className="w-32">
+        <div className="w-full sm:w-32">
           <label className="block text-xs font-medium uppercase text-gray-500 dark:text-gray-400 mb-1">{t("status")}</label>
           <select
             value={filters.status}
@@ -153,7 +153,7 @@ export default function MaintenancePage() {
             <option value="REJECTED">{t("statusRejected")}</option>
           </select>
         </div>
-        <div className="w-32">
+        <div className="w-full sm:w-32">
           <label className="block text-xs font-medium uppercase text-gray-500 dark:text-gray-400 mb-1">{t("category")}</label>
           <select
             value={filters.category}
@@ -167,7 +167,7 @@ export default function MaintenancePage() {
             <option value="Security">Security</option>
           </select>
         </div>
-        <div className="w-32">
+        <div className="w-full sm:w-32">
           <label className="block text-xs font-medium uppercase text-gray-500 dark:text-gray-400 mb-1">{t("priority")}</label>
           <select
             value={filters.priority}
@@ -190,22 +190,24 @@ export default function MaintenancePage() {
           ))}
         </div>
       ) : (
-        <DataTable<MaintenanceRequest>
-          columns={columns}
-          data={data}
-          actions={[t("viewDetails")]}
-          onRowAction={(action, row) => {
-            if (action === t("viewDetails")) {
-              setDetailsRequest(row);
-            }
-          }}
-          pagination={{
-            page,
-            total: data.length,
-            perPage: 9,
-            onPageChange: setPage,
-          }}
-        />
+        <div className="overflow-x-auto">
+          <DataTable<MaintenanceRequest>
+            columns={columns}
+            data={data}
+            actions={[t("viewDetails")]}
+            onRowAction={(action, row) => {
+              if (action === t("viewDetails")) {
+                setDetailsRequest(row);
+              }
+            }}
+            pagination={{
+              page,
+              total: data.length,
+              perPage: 9,
+              onPageChange: setPage,
+            }}
+          />
+        </div>
       )}
 
       {/* Create Modal */}

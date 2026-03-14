@@ -87,7 +87,7 @@ export default function DocumentsPage() {
     { value: "Invoice", label: t("invoice") },
     { value: "Contract", label: t("contract") },
     { value: "Report", label: t("report") },
-    { value: "Vendor", label: t("vendorCategory") },
+    { value: "Vendor", label: t("vendorDoc") },
     { value: "Other", label: t("other") },
   ];
 
@@ -100,7 +100,7 @@ export default function DocumentsPage() {
           canUpload ? (
             <button
               onClick={() => setUploadOpen(true)}
-              className="inline-flex items-center gap-2 rounded-md bg-[#1E40AF] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1a3899] transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-md bg-[#1E40AF] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1a3899] transition-colors w-full sm:w-auto"
             >
               <Plus className="h-4 w-4" />
               {t("addDocument")}
@@ -146,25 +146,27 @@ export default function DocumentsPage() {
           ))}
         </div>
       ) : (
-        <DataTable<Document>
-          columns={columns}
-          data={documents}
-          actions={[t("download"), t("delete")]}
-          onRowAction={(action, row) => {
-            if (action === t("delete")) {
-              deleteMutation.mutate(row.id);
-            }
-            if (action === t("download") && row.url) {
-              window.open(row.url, "_blank");
-            }
-          }}
-          pagination={{
-            page,
-            total,
-            perPage: 9,
-            onPageChange: setPage,
-          }}
-        />
+        <div className="overflow-x-auto">
+          <DataTable<Document>
+            columns={columns}
+            data={documents}
+            actions={[t("download"), t("delete")]}
+            onRowAction={(action, row) => {
+              if (action === t("delete")) {
+                deleteMutation.mutate(row.id);
+              }
+              if (action === t("download") && row.url) {
+                window.open(row.url, "_blank");
+              }
+            }}
+            pagination={{
+              page,
+              total,
+              perPage: 9,
+              onPageChange: setPage,
+            }}
+          />
+        </div>
       )}
 
       {/* Upload Modal */}

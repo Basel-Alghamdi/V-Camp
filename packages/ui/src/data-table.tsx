@@ -70,9 +70,9 @@ export function DataTable<T extends Record<string, any>>({
     : data.length;
 
   return (
-    <div className="rounded-lg bg-white dark:bg-gray-900 shadow-sm dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800">
+    <div className="min-w-0 rounded-lg bg-white dark:bg-gray-900 shadow-sm dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800">
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm">
+        <table className="min-w-[600px] w-full text-left text-sm">
           <thead>
             <tr className="border-b border-gray-100 dark:border-gray-800">
               <th className="px-4 py-3 w-10">
@@ -206,8 +206,8 @@ export function DataTable<T extends Record<string, any>>({
       </div>
 
       {pagination && (
-        <div className="flex items-center justify-between border-t border-gray-100 dark:border-gray-800 px-4 py-3">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 dark:border-gray-800 px-4 py-3">
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
             Showing {startItem}-{String(endItem).padStart(2, "0")} of{" "}
             {pagination.total}
           </p>

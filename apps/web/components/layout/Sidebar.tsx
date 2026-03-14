@@ -35,12 +35,12 @@ const navItems: NavItem[] = [
 interface SidebarProps {
   collapsed: boolean;
   onToggle: () => void;
+  onNavigate?: () => void;
 }
 
-export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export default function Sidebar({ collapsed, onToggle, onNavigate }: SidebarProps) {
   const pathname = usePathname();
   const t = useTranslations("nav");
-  const tc = useTranslations("common");
   const locale = useLocale();
   const isRTL = locale === "ar";
 
@@ -52,9 +52,9 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
   return (
     <aside
-      className={`fixed top-0 z-30 flex h-screen flex-col bg-[#1E3A5F] dark:bg-gray-900 transition-all duration-300 ${
-        isRTL ? "right-0" : "left-0"
-      } ${collapsed ? "w-16" : "w-60"}`}
+      className={`flex h-screen flex-col bg-[#1E3A5F] dark:bg-gray-900 transition-all duration-300 ${
+        collapsed ? "w-16" : "w-60"
+      }`}
     >
       {/* Logo area */}
       <div className="flex h-16 items-center gap-3 border-b border-white/10 px-4">
@@ -101,6 +101,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
             <Link
               key={item.labelKey}
               href={localizedHref}
+              onClick={onNavigate}
               className={`group relative flex items-center gap-3 rounded-md px-3 py-2.5 transition-colors ${
                 collapsed ? "justify-center" : ""
               } ${
@@ -129,8 +130,8 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
         })}
       </nav>
 
-      {/* Collapse toggle at bottom */}
-      <div className="border-t border-white/10 p-3">
+      {/* Collapse toggle at bottom — hidden on mobile */}
+      <div className="hidden md:block border-t border-white/10 p-3">
         <button
           onClick={onToggle}
           className="flex w-full items-center justify-center rounded-md p-2 text-[#9CA3AF] hover:bg-white/5 hover:text-white transition-colors"

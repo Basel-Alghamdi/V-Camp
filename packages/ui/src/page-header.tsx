@@ -10,16 +10,16 @@ export interface PageHeaderProps {
 
 export function PageHeader({ title, subtitle, action }: PageHeaderProps) {
   return (
-    <div className="flex items-start justify-between mb-6">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between mb-6">
       <div>
-        <h1 className="text-2xl font-bold text-[var(--color-primary)]">
+        <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-primary)]">
           {title}
         </h1>
         {subtitle && (
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>
         )}
       </div>
-      {action && <div>{action}</div>}
+      {action && <div className="w-full sm:w-auto">{action}</div>}
     </div>
   );
 }

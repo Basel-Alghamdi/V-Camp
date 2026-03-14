@@ -13,15 +13,15 @@ export default function ActivityLogLoading() {
           <div className="h-3 w-16 rounded bg-gray-100 dark:bg-gray-800 mb-1" />
           <div className="h-10 rounded-md bg-gray-100 dark:bg-gray-800" />
         </div>
-        <div className="w-40">
+        <div className="w-full sm:w-40">
           <div className="h-3 w-12 rounded bg-gray-100 dark:bg-gray-800 mb-1" />
           <div className="h-10 rounded-md bg-gray-100 dark:bg-gray-800" />
         </div>
-        <div className="w-40">
+        <div className="w-full sm:w-40">
           <div className="h-3 w-12 rounded bg-gray-100 dark:bg-gray-800 mb-1" />
           <div className="h-10 rounded-md bg-gray-100 dark:bg-gray-800" />
         </div>
-        <div className="w-40">
+        <div className="w-full sm:w-40">
           <div className="h-3 w-12 rounded bg-gray-100 dark:bg-gray-800 mb-1" />
           <div className="h-10 rounded-md bg-gray-100 dark:bg-gray-800" />
         </div>

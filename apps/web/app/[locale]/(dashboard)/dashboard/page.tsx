@@ -128,10 +128,12 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <DataTable<RecentTransaction>
-              columns={transactionColumns}
-              data={transactions || []}
-            />
+            <div className="overflow-x-auto">
+              <DataTable<RecentTransaction>
+                columns={transactionColumns}
+                data={transactions || []}
+              />
+            </div>
           )}
         </div>
         <div className="space-y-6">

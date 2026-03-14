@@ -65,7 +65,7 @@ export default function MiniCalendar() {
       </div>
 
       {/* Day headers */}
-      <div className="grid grid-cols-7 gap-1 mb-1">
+      <div className="grid grid-cols-7 mb-1">
         {DAYS.map((d) => (
           <div
             key={d}
@@ -77,11 +77,11 @@ export default function MiniCalendar() {
       </div>
 
       {/* Day numbers */}
-      <div className="grid grid-cols-7 gap-1">
+      <div className="grid grid-cols-7">
         {cells.map((day, i) => (
           <div
             key={i}
-            className={`flex h-7 w-7 items-center justify-center rounded text-xs mx-auto ${
+            className={`flex aspect-square w-full items-center justify-center rounded text-xs ${
               day
                 ? "text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 cursor-pointer"
                 : ""

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Sun, Moon, History, Bell, PanelLeftClose, PanelLeft, LogOut } from "lucide-react";
+import { Sun, Moon, History, Bell, Menu, LogOut } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { useAuthStore } from "@/store/auth.store";
 import { useThemeStore } from "@/store/theme.store";
@@ -48,21 +48,17 @@ export default function TopBar({
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4">
-      {/* Toggle */}
+    <header className="sticky top-0 z-20 flex h-14 md:h-16 items-center justify-between border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 md:px-4">
+      {/* Menu / Toggle */}
       <button
         onClick={onToggleSidebar}
         className="rounded-md p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
       >
-        {sidebarCollapsed ? (
-          <PanelLeft className="h-5 w-5" />
-        ) : (
-          <PanelLeftClose className="h-5 w-5" />
-        )}
+        <Menu className="h-5 w-5" />
       </button>
 
-      {/* Center — search */}
-      <div className="mx-4 flex max-w-md flex-1">
+      {/* Center — search (hidden on mobile) */}
+      <div className="hidden sm:flex mx-4 max-w-md flex-1">
         <div className="relative w-full">
           <svg
             className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 ${isRTL ? "right-3" : "left-3"}`}
@@ -93,14 +89,14 @@ export default function TopBar({
       </div>
 
       {/* Right — icons + language toggle + avatar */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1 md:gap-2">
         <button
           onClick={toggleTheme}
           className="rounded-md p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
         >
           {dark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </button>
-        <button className="rounded-md p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+        <button className="hidden sm:block rounded-md p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
           <History className="h-5 w-5" />
         </button>
         <button className="relative rounded-md p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
@@ -110,10 +106,10 @@ export default function TopBar({
         <LanguageToggle />
 
         {/* User avatar + dropdown */}
-        <div className={`relative ${isRTL ? "mr-2" : "ml-2"}`} ref={menuRef}>
+        <div className={`relative ${isRTL ? "mr-1 md:mr-2" : "ml-1 md:ml-2"}`} ref={menuRef}>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1E3A5F] text-sm font-semibold text-white hover:bg-[#162d4a] transition-colors"
+            className="flex h-8 w-8 md:h-9 md:w-9 items-center justify-center rounded-full bg-[#1E3A5F] text-xs md:text-sm font-semibold text-white hover:bg-[#162d4a] transition-colors"
           >
             {initials}
           </button>

@@ -26,16 +26,16 @@ export function StatCard({
   variant = "default",
 }: StatCardProps) {
   return (
-    <div className="relative flex flex-col justify-between rounded-lg bg-white dark:bg-gray-900 p-5 shadow-sm dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800 min-h-[120px]">
+    <div className="relative flex flex-col justify-between rounded-lg bg-white dark:bg-gray-900 p-3 sm:p-5 shadow-sm dark:shadow-gray-900/30 border border-gray-100 dark:border-gray-800">
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
-          <p className="mt-1 text-2xl font-bold text-[var(--color-primary)]">
+          <p className="mt-1 text-xl sm:text-2xl font-bold text-[var(--color-primary)]">
             {value}
           </p>
         </div>
         <div
-          className={`flex h-10 w-10 items-center justify-center rounded-full ${variantIconBg[variant]}`}
+          className={`flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full ${variantIconBg[variant]}`}
         >
           {icon}
         </div>

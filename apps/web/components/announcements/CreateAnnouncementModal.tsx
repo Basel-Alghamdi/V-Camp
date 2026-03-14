@@ -127,7 +127,7 @@ export default function CreateAnnouncementModal({
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
             {t("priority")}
           </label>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {priorityOptions.map((opt) => (
               <button
                 key={opt.value}

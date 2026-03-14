@@ -81,7 +81,7 @@ export default function RegisterPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-[#1E3A5F]">{t("createAccount")}</h1>
+      <h1 className="text-xl sm:text-2xl font-bold text-[#1E3A5F]">{t("createAccount")}</h1>
       <p className="mt-1 text-sm text-gray-500">
         {t("registerSubtitle")}
       </p>

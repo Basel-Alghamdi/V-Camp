@@ -78,7 +78,7 @@ export default function ActivityLogPage() {
 
       {/* Filter Bar */}
       <div className="flex flex-wrap items-end gap-4 mb-6">
-        <div className="flex-1 min-w-[220px]">
+        <div className="flex-1 min-w-0">
           <label className="block text-xs font-medium uppercase text-gray-500 dark:text-gray-400 mb-1">
             {t("search")}
           </label>
@@ -96,7 +96,7 @@ export default function ActivityLogPage() {
           </div>
         </div>
 
-        <div className="w-40">
+        <div className="w-full sm:w-40">
           <label className="block text-xs font-medium uppercase text-gray-500 dark:text-gray-400 mb-1">
             {t("type")}
           </label>
@@ -115,7 +115,7 @@ export default function ActivityLogPage() {
           </select>
         </div>
 
-        <div className="w-40">
+        <div className="w-full sm:w-40">
           <label className="block text-xs font-medium uppercase text-gray-500 dark:text-gray-400 mb-1">
             {t("from")}
           </label>
@@ -129,7 +129,7 @@ export default function ActivityLogPage() {
           />
         </div>
 
-        <div className="w-40">
+        <div className="w-full sm:w-40">
           <label className="block text-xs font-medium uppercase text-gray-500 dark:text-gray-400 mb-1">
             {t("to")}
           </label>

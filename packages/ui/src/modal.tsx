@@ -54,7 +54,7 @@ export function Modal({
 
       {/* Panel */}
       <div
-        className={`relative w-full ${sizeClasses[size]} mx-4 rounded-xl bg-white dark:bg-gray-900 p-6 shadow-xl dark:shadow-gray-900/50`}
+        className={`relative w-full ${sizeClasses[size]} mx-4 rounded-xl bg-white dark:bg-gray-900 p-4 sm:p-6 shadow-xl dark:shadow-gray-900/50`}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
