@@ -10,4 +10,8 @@ export default defineConfig({
     "@owners-platform/validators",
     "@owners-platform/types",
   ],
+  external: [
+    "@prisma/client",
+    ".prisma/client",
+  ],
 });
