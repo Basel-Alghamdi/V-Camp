@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.2",
     "@owners-platform/database": "workspace:*",
     "@owners-platform/types": "workspace:*",
     "@owners-platform/validators": "workspace:*",
