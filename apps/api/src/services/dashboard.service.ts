@@ -8,7 +8,7 @@ export async function getSummary(buildingId: string) {
         _sum: { amount: true },
       }),
       prisma.transaction.aggregate({
-        where: { buildingId, amount: { lt: 0 } },
+        where: { buildingId, status: "PAID", category: { not: "fee" } },
         _sum: { amount: true },
       }),
       prisma.maintenanceRequest.count({

@@ -10,9 +10,9 @@ const inter = Inter({ subsets: ["latin"] });
 const locales = ["ar", "en"];
 
 export const metadata: Metadata = {
-  title: "Owners Platform",
+  title: "دارِك — DARIK",
   description:
-    "Digital Platform for Owners Associations & Building Management",
+    "منصة رقمية لجمعيات الملاك وإدارة المباني — Digital Platform for Owners Associations & Building Management",
 };
 
 export default async function LocaleLayout({

@@ -12,7 +12,6 @@ import {
   Users,
   ClipboardList,
   FileText,
-  CreditCard,
 } from "lucide-react";
 
 interface NavItem {
@@ -56,14 +55,13 @@ export default function Sidebar({ collapsed, onToggle, onNavigate }: SidebarProp
         collapsed ? "w-16" : "w-60"
       }`}
     >
-      {/* Logo area */}
-      <div className="flex h-16 items-center gap-3 border-b border-white/10 px-4">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#2B4F7E] dark:bg-gray-700">
-          <CreditCard className="h-4 w-4 text-white" />
-        </div>
-        {!collapsed && (
-          <span className="text-lg font-bold text-white">S</span>
-        )}
+      {/* Logo */}
+      <div className="flex h-16 items-center justify-center border-b border-white/10 px-3">
+        <img
+          src={isRTL ? "/images/darik-logo-ar.png" : "/images/darik-logo-en.png"}
+          alt="DARIK"
+          className={`object-contain ${collapsed ? "h-8" : "h-10"}`}
+        />
       </div>
 
       {/* Navigation */}

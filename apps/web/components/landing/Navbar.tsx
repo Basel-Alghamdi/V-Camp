@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Building2, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { LanguageToggle } from "@/components/shared/LanguageToggle";
 
@@ -29,12 +29,11 @@ export default function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1E40AF]">
-              <Building2 className="h-4 w-4 text-white" />
-            </div>
-            <span className="text-lg font-bold text-[#1E3A5F]">AssociO</span>
-          </div>
+          <img
+            src={locale === "ar" ? "/images/darik-logo-ar.png" : "/images/darik-logo-en.png"}
+            alt="DARIK"
+            className="h-9 object-contain"
+          />
 
           {/* Center nav links (desktop) */}
           <div className="hidden md:flex items-center gap-8">

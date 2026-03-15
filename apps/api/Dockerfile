@@ -7,6 +7,7 @@ WORKDIR /app
 COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 COPY apps/api/package.json apps/api/
 COPY packages/config/package.json packages/config/
+COPY packages/database/package.json packages/database/
 COPY packages/types/package.json packages/types/
 COPY packages/validators/package.json packages/validators/
 RUN pnpm install --frozen-lockfile
@@ -16,8 +17,8 @@ COPY packages/ packages/
 COPY apps/api/ apps/api/
 
 # Build
-RUN pnpm --filter @owners-platform/types build 2>/dev/null || true
-RUN pnpm --filter apps/api build
+RUN pnpm --filter @owners-platform/database exec prisma generate
+RUN pnpm --filter @owners-platform/api build
 
 # Production
 FROM node:20-alpine AS production
