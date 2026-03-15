@@ -2,7 +2,7 @@
   "$schema": "https://railway.com/railway.schema.json",
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "pnpm install && pnpm --filter @owners-platform/database exec prisma generate && pnpm --filter @owners-platform/api build"
+    "buildCommand": "pnpm install && pnpm --filter @owners-platform/database exec prisma generate"
   },
   "deploy": {
     "startCommand": "pnpm --filter @owners-platform/api start",
